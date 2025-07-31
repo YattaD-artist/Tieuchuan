@@ -61,9 +61,12 @@
 
     textarea, input {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      font-size: 16px;
+  padding: 10px;
+  font-size: 16px;
+  resize: vertical;
+  line-height: 1.5;
+  height: calc(1.5em * 12 + 20px); /* 12 dòng + padding */
+  overflow-y: auto;
     }
 
     button {
@@ -98,11 +101,11 @@ Có
 Chuẩn
 Thôi</textarea>
 
-      <label>Số lần lặp danh sách (tối đa 9):</label>
+      <label>Số lần lặp danh sách (Tối đa 9 lần):</label>
       <input type="number" id="repeatCount" value="1" min="1" max="9" />
 
-      <label>Thời gian suy nghĩ (1 → chậm):</label>
-      <input type="number" id="spinSpeedInput" value="1" min="1" max="10" />
+      <label>Thời gian suy nghĩ:</label>
+      <input type="number" id="spinSpeedInput" value="1" min="1" max="15" />
 
       <button id="spinButton">CHỌN NÀO TIÊU!</button>
       <div id="result"></div>
@@ -209,7 +212,7 @@ Thôi</textarea>
       const adjusted = finalAngle % (2 * Math.PI);
       const index = Math.floor((2 * Math.PI - adjusted) / sliceAngle) % names.length;
       const winner = names[index];
-      document.getElementById("result").textContent = `🎯 Kết quả: ${winner}`;
+      document.getElementById("result").textContent = `🎯 Tiêu chọn: ${winner}`;
     }
 
     // Tự khởi tạo khi load trang
