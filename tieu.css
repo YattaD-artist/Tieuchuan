@@ -249,3 +249,31 @@ button:hover:not(#spinButton) {
 .vietlott-ball:hover {
   transform: scale(1.1);
 }
+.vietlott-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(240, 240, 240, 0.9);
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 12px 0;
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.vietlott-menu .vietlott-btn {
+  padding: 10px 16px;
+  background-color: #ffd966;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.vietlott-menu .vietlott-btn:hover {
+  background-color: #ffc107;
+  transform: scale(1.1);
+}
