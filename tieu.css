@@ -95,7 +95,7 @@ textarea {
 
 #mainImage {
   height: 80%;
-  max-height: 300px;
+  max-height: calc(1.5em * 15);
   object-fit: contain;
 }
 
