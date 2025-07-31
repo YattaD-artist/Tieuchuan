@@ -4,48 +4,82 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Bánh Xe May Mắn</title>
+
+  <!-- ===================== CSS: Bố cục và giao diện ===================== -->
   <style>
     * { box-sizing: border-box; }
     html, body {
       margin: 0; padding: 0; height: 100%;
       font-family: sans-serif; background: #f0f0f0;
-      overflow: hidden;
+      overflow: hidden; /* Không cuộn */
     }
+
     .layout {
-      display: flex; height: 100%; width: 100%;
+      display: flex;
+      height: 100%;
+      width: 100%;
     }
-    .left, .right {
-      flex: 1; padding: 20px;
-    }
+
+    /* ======== Bên trái: Bánh xe ======== */
     .left {
-      display: flex; justify-content: center; align-items: center; position: relative;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 20px;
     }
+
     #wheelCanvas {
-      max-width: 100%; max-height: 100%;
-      background: #fff; border-radius: 50%;
+      max-width: 100%;
+      max-height: 100%;
+      background: #fff;
+      border-radius: 50%;
     }
+
+    /* ======== Bên phải: Nhập liệu và kết quả ======== */
     .right {
-      display: flex; flex-direction: column; justify-content: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
     }
+
     textarea {
-      width: 100%; height: 150px; resize: none;
-      font-size: 16px; padding: 10px; margin-bottom: 10px;
+      width: 100%;
+      height: 150px;
+      resize: none;
+      font-size: 16px;
+      padding: 10px;
+      margin-bottom: 10px;
     }
+
     button {
-      padding: 10px; margin: 5px 0;
-      font-size: 16px; cursor: pointer;
+      padding: 10px;
+      margin: 5px 0;
+      font-size: 16px;
+      cursor: pointer;
     }
+
     #result {
-      font-size: 22px; font-weight: bold;
-      color: green; margin-top: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      color: green;
+      margin-top: 20px;
     }
   </style>
 </head>
+
 <body>
+  <!-- ===================== Bố cục trang ===================== -->
   <div class="layout">
+    <!-- Bánh xe bên trái -->
     <div class="left">
       <canvas id="wheelCanvas" width="500" height="500"></canvas>
     </div>
+
+    <!-- Nhập dữ liệu bên phải -->
     <div class="right">
       <h2>Danh sách tên</h2>
       <textarea id="inputNames">An
@@ -60,7 +94,9 @@ Khánh</textarea>
     </div>
   </div>
 
+  <!-- ===================== JavaScript: Logic và xử lý ===================== -->
   <script>
+    // ==== Biến khởi tạo ====
     let names = [];
     let angle = 0;
     let isSpinning = false;
@@ -68,15 +104,18 @@ Khánh</textarea>
     const ctx = canvas.getContext("2d");
     const radius = canvas.width / 2;
 
+    // ==== Hình ảnh mũi tên trung tâm ====
     const pointerImg = new Image();
     pointerImg.src = "Tieu.webp";
 
+    // ==== Xử lý nút "Tạo Vòng Quay" ====
     document.getElementById("drawButton").onclick = () => {
       const input = document.getElementById("inputNames").value.trim();
       names = input.split("\n").map(n => n.trim()).filter(n => n);
+
       if (names.length > 1) {
-        drawWheel();
-        drawCenterImage(); // vẽ ảnh ở giữa
+        drawWheel();              // Vẽ bánh xe
+        drawCenterImage();        // Vẽ hình ở giữa
         document.getElementById("spinButton").disabled = false;
         document.getElementById("result").textContent = '';
       } else {
@@ -84,6 +123,7 @@ Khánh</textarea>
       }
     };
 
+    // ==== Vẽ bánh xe từ danh sách tên ====
     function drawWheel() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const sliceAngle = (2 * Math.PI) / names.length;
@@ -92,13 +132,14 @@ Khánh</textarea>
         const startAngle = i * sliceAngle;
         const endAngle = startAngle + sliceAngle;
 
+        // Vẽ miếng hình quạt
         ctx.beginPath();
         ctx.moveTo(radius, radius);
         ctx.arc(radius, radius, radius, startAngle, endAngle);
         ctx.fillStyle = i % 2 === 0 ? "#3498db" : "#9b59b6";
         ctx.fill();
 
-        // Tên
+        // Vẽ chữ
         ctx.save();
         ctx.translate(radius, radius);
         ctx.rotate(startAngle + sliceAngle / 2);
@@ -110,8 +151,9 @@ Khánh</textarea>
       }
     }
 
+    // ==== Vẽ hình ảnh ở chính giữa bánh xe ====
     function drawCenterImage() {
-      const size = 150; // 3x so với 50
+      const size = 150; // 3 lần kích thước gốc
       const x = radius - size / 2;
       const y = radius - size / 2;
 
@@ -122,32 +164,35 @@ Khánh</textarea>
       }
     }
 
+    // ==== Vẽ bánh xe khi đang xoay (có xoay canvas) ====
     function drawSpinningWheel(rotation) {
       ctx.save();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Xoay bánh xe
       ctx.translate(radius, radius);
       ctx.rotate(rotation);
       ctx.translate(-radius, -radius);
-      drawWheel();
+      drawWheel(); // Vẽ lại bánh xe trong trạng thái đã xoay
       ctx.restore();
 
-      drawCenterImage(); // luôn vẽ lại hình ở giữa
+      drawCenterImage(); // Luôn vẽ lại hình ảnh mũi tên ở tâm, không xoay
     }
 
+    // ==== Nút QUAY! ====
     document.getElementById("spinButton").onclick = () => {
       if (isSpinning) return;
-
       isSpinning = true;
       document.getElementById("result").textContent = '';
+
       const spinTime = 3000 + Math.random() * 2000;
-      const spinAngle = 10 + Math.random() * 10;
+      const spinAngle = 10 + Math.random() * 10; // số vòng xoay
       const start = performance.now();
 
       function animateSpin(now) {
         const elapsed = now - start;
         const progress = Math.min(elapsed / spinTime, 1);
-        const easing = 1 - Math.pow(1 - progress, 3);
+        const easing = 1 - Math.pow(1 - progress, 3); // easeOutCubic
         angle = easing * spinAngle * 2 * Math.PI;
 
         drawSpinningWheel(angle);
@@ -156,13 +201,14 @@ Khánh</textarea>
           requestAnimationFrame(animateSpin);
         } else {
           isSpinning = false;
-          showResult(angle);
+          showResult(angle); // kết quả cuối
         }
       }
 
       requestAnimationFrame(animateSpin);
     };
 
+    // ==== Tính toán và hiển thị kết quả ====
     function showResult(finalAngle) {
       const sliceAngle = (2 * Math.PI) / names.length;
       const adjusted = finalAngle % (2 * Math.PI); // mũi tên ảo hướng phải (0 rad)
