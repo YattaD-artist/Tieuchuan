@@ -85,22 +85,17 @@ textarea {
 .input-wrap {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-  position: relative;
+  gap: 15px;
 }
 
 #inputNames {
   width: 60%;
   min-width: 200px;
-  resize: vertical;
-  font-size: 1.1em;
 }
 
 #mainImage {
-    height: 60%;
-  max-height: 60%;
+  height: 80%;
+  max-height: 300px;
   object-fit: contain;
 }
 
@@ -394,19 +389,18 @@ button:hover:not(#spinButton) {
   }
 }
 @media (max-width: 768px) {
-  .input-wrap {
+  .right-content {
     flex-direction: column;
     align-items: center;
   }
 
-  #inputNames {
-    width: 100%;
+  .image-container {
+    margin-top: 20px;
   }
 
   #mainImage {
     width: 80%;
     height: auto;
-    max-height: 200px;
-    margin-top: 10px;
+    max-height: none;
   }
 }
