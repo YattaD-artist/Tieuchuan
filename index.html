@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tiêu Chuẩn</title>
-
   <style>
     * { box-sizing: border-box; }
     html, body {
-      margin: 0; padding: 0; height: 100%;
+      margin: 0;
+      padding: 0;
+      height: 100%;
       font-family: sans-serif;
       background: #efeacf;
-      color: #7c5013;
       overflow: hidden;
     }
 
@@ -28,7 +28,6 @@
       align-items: center;
       position: relative;
       padding: 20px;
-      background: #fcca5c;
     }
 
     #wheelCanvas {
@@ -60,13 +59,17 @@
       flex-direction: column;
       justify-content: center;
       padding: 20px;
-      background: #91cb3f;
     }
 
     .right label {
       margin-top: 20px;
       display: block;
       font-weight: bold;
+      color: #7c5013;
+    }
+
+    h2 {
+      color: #7c5013;
     }
 
     textarea {
@@ -78,61 +81,64 @@
       overflow-y: auto;
       min-height: calc(1.5em * 10);
       max-height: calc(1.5em * 15);
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      transition: height 0.2s ease;
-      background: #fff8e1;
-      color: #7c5013;
+      box-sizing: border-box;
+      border: 2px solid #91cb3f;
+      border-radius: 6px;
+      background: #fffbe0;
     }
 
     button {
-      padding: 10px 14px;
+      padding: 10px 15px;
       font-size: 16px;
       cursor: pointer;
       border: none;
       border-radius: 6px;
-      transition: transform 0.2s ease, background-color 0.3s;
+      background-color: #91cb3f;
+      color: #1a1a1a;
+      transition: transform 0.2s ease, background-color 0.2s ease;
     }
 
     button:hover {
-      transform: scale(1.15);
+      transform: scale(1.2);
     }
 
     #repeatButtons, #speedButtons {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 10px;
     }
 
-    .repeat-btn,
-    .speed-btn {
+    .repeat-btn.active {
       background-color: #00a79b;
       color: white;
-    }
-
-    .repeat-btn.active {
-      background-color: #7c5013;
+      font-weight: bold;
     }
 
     .speed-btn.active {
-      background-color: #e7a81e;
+      background-color: #fcca5c;
+      color: #000;
+      font-weight: bold;
     }
 
     #spinButton {
-      background-color: #f6a451;
-      color: #2b303c;
-      font-weight: bold;
+      background-color: #e7a81e;
+      margin-top: 20px;
+    }
+
+    #spinButton:hover {
+      background-color: #fcca5c;
     }
 
     #result {
       font-size: 22px;
       font-weight: bold;
-      color: #2b303c;
+      color: #7c5013;
       margin-top: 20px;
     }
   </style>
 </head>
+
 <body>
   <div class="layout">
     <div class="left">
@@ -141,129 +147,162 @@
     </div>
 
     <div class="right">
-      <label for="items">Nhập danh sách (mỗi dòng là 1 mục):</label>
-      <textarea id="items" placeholder="Ví dụ:\nĂn gì?\nĐi đâu?\nLàm gì?"></textarea>
+      <h2>Viết danh sách đi, Tiêu chọn cho</h2>
+      <textarea id="inputNames">Tiêu
+Chọn
+Chỉ
+Có
+Chuẩn
+Thôi</textarea>
 
-      <label>Số lần quay:</label>
+      <label>Số lần lặp danh sách:</label>
       <div id="repeatButtons">
-        <button class="repeat-btn">1</button>
-        <button class="repeat-btn">3</button>
-        <button class="repeat-btn">5</button>
+        <button data-repeat="1" class="repeat-btn active">1</button>
+        <button data-repeat="2" class="repeat-btn">2</button>
+        <button data-repeat="3" class="repeat-btn">3</button>
+        <button data-repeat="4" class="repeat-btn">4</button>
+        <button data-repeat="5" class="repeat-btn">5</button>
       </div>
 
       <label>Thời gian suy nghĩ:</label>
       <div id="speedButtons">
-        <button class="speed-btn" data-speed="3000">3s</button>
-        <button class="speed-btn" data-speed="5000">5s</button>
-        <button class="speed-btn" data-speed="7000">7s</button>
+        <button data-speed="1" class="speed-btn active">1</button>
+        <button data-speed="2" class="speed-btn">2</button>
+        <button data-speed="3" class="speed-btn">3</button>
+        <button data-speed="4" class="speed-btn">4</button>
+        <button data-speed="5" class="speed-btn">5</button>
+        <button data-speed="6" class="speed-btn">6</button>
+        <button data-speed="7" class="speed-btn">7</button>
+        <button data-speed="8" class="speed-btn">8</button>
+        <button data-speed="9" class="speed-btn">9</button>
+        <button data-speed="10" class="speed-btn">10</button>
       </div>
 
-      <button id="spinButton">Quay Ngay!</button>
+      <button id="spinButton">CHỌN NÀO TIÊU!</button>
       <div id="result"></div>
     </div>
   </div>
 
   <script>
-    const canvas = document.getElementById("wheelCanvas");
-    const ctx = canvas.getContext("2d");
-    let items = [];
+    let names = [];
     let angle = 0;
     let isSpinning = false;
     let repeatCount = 1;
-    let spinSpeed = 5000;
-    let currentSpin = 0;
+    let spinSpeed = 1;
+
+    const canvas = document.getElementById("wheelCanvas");
+    const ctx = canvas.getContext("2d");
+    const radius = canvas.width / 2;
+
+    const colors = ["#2b303c", "#f6a451", "#b1844c", "#c19567"];
+
+    function updateNameList() {
+      const input = document.getElementById("inputNames").value.trim();
+      const rawNames = input.split("\n").map(n => n.trim()).filter(n => n);
+      names = [];
+
+      for (let i = 0; i < repeatCount; i++) {
+        names = names.concat(rawNames);
+      }
+    }
 
     function drawWheel() {
-      const radius = canvas.width / 2;
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const arc = 2 * Math.PI / items.length;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const sliceAngle = (2 * Math.PI) / names.length;
 
-      const wheelColors = ["#2b303c", "#f6a451", "#b1844c", "#c19567"];
+      for (let i = 0; i < names.length; i++) {
+        const startAngle = i * sliceAngle;
+        const endAngle = startAngle + sliceAngle;
 
-      for (let i = 0; i < items.length; i++) {
         ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.fillStyle = wheelColors[i % wheelColors.length];
-        ctx.arc(centerX, centerY, radius, i * arc + angle, (i + 1) * arc + angle);
+        ctx.moveTo(radius, radius);
+        ctx.arc(radius, radius, radius, startAngle, endAngle);
+        ctx.fillStyle = colors[i % colors.length];
         ctx.fill();
-        ctx.save();
 
-        ctx.translate(centerX, centerY);
-        ctx.rotate(i * arc + arc / 2 + angle);
+        ctx.save();
+        ctx.translate(radius, radius);
+        ctx.rotate(startAngle + sliceAngle / 2);
         ctx.textAlign = "right";
-        ctx.fillStyle = "white";
-        ctx.font = "bold 16px sans-serif";
-        ctx.fillText(items[i], radius - 10, 10);
+        ctx.fillStyle = "#fff";
+        ctx.font = "16px sans-serif";
+        ctx.fillText(names[i], radius - 10, 5);
         ctx.restore();
       }
     }
 
-    function rotateWheel(callback) {
-      const duration = spinSpeed;
-      const start = performance.now();
-      const totalAngle = Math.PI * 10 + Math.random() * Math.PI * 2;
-
-      function animate(time) {
-        const elapsed = time - start;
-        const t = Math.min(elapsed / duration, 1);
-        angle = totalAngle * easeOutCubic(t);
-        drawWheel();
-
-        if (t < 1) requestAnimationFrame(animate);
-        else callback();
-      }
-
-      requestAnimationFrame(animate);
-    }
-
-    function easeOutCubic(t) {
-      return 1 - Math.pow(1 - t, 3);
-    }
-
-    function pickResult() {
-      const arc = 2 * Math.PI / items.length;
-      const index = items.length - Math.floor(((angle % (2 * Math.PI)) / arc)) - 1;
-      return items[index < 0 ? index + items.length : index];
-    }
-
-    function startSpin() {
-      if (isSpinning || items.length === 0) return;
-
-      isSpinning = true;
-      currentSpin = 0;
-      document.getElementById("result").textContent = "";
-
-      function spinNext() {
-        rotateWheel(() => {
-          const result = pickResult();
-          document.getElementById("result").textContent += `🎯 ${result}\n`;
-          currentSpin++;
-          if (currentSpin < repeatCount) {
-            angle = 0;
-            setTimeout(spinNext, 800);
-          } else {
-            isSpinning = false;
-          }
-        });
-      }
-
-      spinNext();
-    }
-
-    document.getElementById("spinButton").addEventListener("click", () => {
-      items = document.getElementById("items").value.trim().split("\n").filter(Boolean);
+    function drawSpinningWheel(rotation) {
+      ctx.save();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.translate(radius, radius);
+      ctx.rotate(rotation);
+      ctx.translate(-radius, -radius);
       drawWheel();
-      startSpin();
+      ctx.restore();
+    }
+
+    document.getElementById("spinButton").onclick = () => {
+      if (isSpinning) return;
+      isSpinning = true;
+      document.getElementById("result").textContent = '';
+
+      updateNameList();
+      if (names.length < 2) {
+        alert("Cần ít nhất 2 tên.");
+        isSpinning = false;
+        return;
+      }
+
+      drawWheel();
+
+      const spinTime = 3000 + (spinSpeed - 1) * 1000;
+      const spinAngle = 10 + Math.random() * 10;
+      const start = performance.now();
+
+      function animateSpin(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / spinTime, 1);
+        const easing = 1 - Math.pow(1 - progress, 3);
+        angle = easing * spinAngle * 2 * Math.PI;
+
+        drawSpinningWheel(angle);
+
+        if (progress < 1) {
+          requestAnimationFrame(animateSpin);
+        } else {
+          isSpinning = false;
+          showResult(angle);
+        }
+      }
+
+      requestAnimationFrame(animateSpin);
+    };
+
+    function showResult(finalAngle) {
+      const sliceAngle = (2 * Math.PI) / names.length;
+      const adjusted = finalAngle % (2 * Math.PI);
+      const index = Math.floor((2 * Math.PI - adjusted) / sliceAngle) % names.length;
+      const winner = names[index];
+      document.getElementById("result").textContent = `🎯 Tiêu chọn: ${winner}`;
+    }
+
+    window.onload = () => {
+      updateNameList();
+      drawWheel();
+    };
+
+    document.getElementById("inputNames").addEventListener("input", () => {
+      updateNameList();
+      drawWheel();
     });
 
     document.querySelectorAll(".repeat-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".repeat-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        repeatCount = parseInt(btn.textContent);
+        repeatCount = parseInt(btn.getAttribute("data-repeat"), 10);
+        updateNameList();
+        drawWheel();
       });
     });
 
@@ -271,12 +310,8 @@
       btn.addEventListener("click", () => {
         document.querySelectorAll(".speed-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        spinSpeed = parseInt(btn.dataset.speed);
+        spinSpeed = parseInt(btn.getAttribute("data-speed"), 10);
       });
-    });
-
-    window.addEventListener("load", () => {
-      drawWheel();
     });
   </script>
 </body>
