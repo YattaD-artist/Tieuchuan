@@ -125,7 +125,7 @@ Thôi</textarea>
         <button data-repeat="5" class="repeat-btn">5</button>
       </div>
 
-      <label>Thời gian suy nghĩ (1 → chậm):</label>
+      <label>Thời gian suy nghĩ:</label>
       <div id="speedButtons">
         <button data-speed="1" class="speed-btn active">1</button>
         <button data-speed="2" class="speed-btn">2</button>
@@ -242,7 +242,7 @@ Thôi</textarea>
       const adjusted = finalAngle % (2 * Math.PI);
       const index = Math.floor((2 * Math.PI - adjusted) / sliceAngle) % names.length;
       const winner = names[index];
-      document.getElementById("result").textContent = `🎯 Kết quả: ${winner}`;
+      document.getElementById("result").textContent = `🎯 Tiêu chọn: ${winner}`;
     }
 
     window.onload = () => {
