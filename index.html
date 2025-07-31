@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bánh Xe May Mắn</title>
+  <title>Tiêu Chuẩn</title>
+
   <style>
     * { box-sizing: border-box; }
     html, body {
@@ -58,13 +59,11 @@
       padding: 20px;
     }
 
-    textarea {
+    textarea, input {
       width: 100%;
-      height: 150px;
-      resize: none;
-      font-size: 16px;
       padding: 10px;
       margin-bottom: 10px;
+      font-size: 16px;
     }
 
     button {
@@ -82,25 +81,37 @@
     }
   </style>
 </head>
+
 <body>
   <div class="layout">
     <div class="left">
       <canvas id="wheelCanvas" width="500" height="500"></canvas>
       <div id="centerImage"></div>
     </div>
+
     <div class="right">
-      <h2>Danh sách tên</h2>
-      <textarea id="inputNames">An
-Bình
-Chi
-Dũng
-Hoa
-Khánh</textarea>
-      <button id="drawButton">Tạo Vòng Quay</button>
-      <button id="spinButton" disabled>QUAY!</button>
+      <h2>Viết danh sách đi, Tiêu chọn cho</h2>
+      <textarea id="inputNames">
+        Tiêu
+Chọn
+Chỉ
+Có
+Chuẩn
+Thôi
+</textarea>
+
+      <label>Số lần lặp danh sách:</label>
+      <input type="number" id="repeatCount" value="1" min="1" />
+
+      <label>Thời gian suy nghĩ (ms, >=3000):</label>
+      <input type="number" id="spinDurationInput" placeholder="Mặc định: 3000-5000" min="3000" />
+
+      <button id="drawButton">Khởi tạo</button>
+      <button id="spinButton" disabled>CHỌN NÀO TIÊU!</button>
       <div id="result"></div>
     </div>
   </div>
+
   <script>
     let names = [];
     let angle = 0;
@@ -111,7 +122,14 @@ Khánh</textarea>
 
     document.getElementById("drawButton").onclick = () => {
       const input = document.getElementById("inputNames").value.trim();
-      names = input.split("\n").map(n => n.trim()).filter(n => n);
+      const repeat = parseInt(document.getElementById("repeatCount").value, 10) || 1;
+
+      let rawNames = input.split("\n").map(n => n.trim()).filter(n => n);
+      names = [];
+
+      for (let i = 0; i < repeat; i++) {
+        names = names.concat(rawNames);
+      }
 
       if (names.length > 1) {
         drawWheel();
@@ -162,7 +180,10 @@ Khánh</textarea>
       isSpinning = true;
       document.getElementById("result").textContent = '';
 
-      const spinTime = 3000 + Math.random() * 2000;
+      const userDuration = parseInt(document.getElementById("spinDurationInput").value, 10);
+      const baseTime = 3000 + Math.random() * 2000;
+      const spinTime = (userDuration && userDuration >= baseTime) ? userDuration : baseTime;
+
       const spinAngle = 10 + Math.random() * 10;
       const start = performance.now();
 
