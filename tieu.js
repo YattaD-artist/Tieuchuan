@@ -1,4 +1,9 @@
+// ==== Âm thanh ====
 const popSound = new Audio('Pop.mp3');
+const menuSound = new Audio('Menu.mp3');
+const goSound = new Audio('GO.mp3');
+const rollSound = new Audio('Roll.mp3');
+const noteSound = new Audio('Note.mp3');
 
 let names = [];
 let angle = 0;
@@ -73,6 +78,12 @@ document.getElementById("spinButton").onclick = () => {
   }
 
   drawWheel();
+  goSound.currentTime = 0;
+  goSound.play();
+
+  rollSound.loop = true;
+  rollSound.currentTime = 0;
+  rollSound.play();
 
   const spinTime = 3000 + (spinSpeed - 1) * 1000;
   const spinAngle = 10 + Math.random() * 10;
@@ -89,6 +100,7 @@ document.getElementById("spinButton").onclick = () => {
     if (progress < 1) {
       requestAnimationFrame(animateSpin);
     } else {
+      rollSound.pause(); // Dừng âm thanh quay
       isSpinning = false;
       showResult(angle);
     }
@@ -105,6 +117,9 @@ function showResult(finalAngle) {
 
   document.getElementById("resultText").textContent = `🎯 Tiêu chọn: ${winner}`;
   document.getElementById("resultOverlay").style.display = 'flex';
+
+  noteSound.currentTime = 0;
+  noteSound.play();
 }
 
 document.getElementById("closeResult").onclick = () => {
@@ -116,11 +131,13 @@ window.onload = () => {
   drawWheel();
 };
 
+// Cập nhật danh sách khi nhập tên
 document.getElementById("inputNames").addEventListener("input", () => {
   updateNameList();
   drawWheel();
 });
 
+// Lặp số
 document.querySelectorAll('.repeat-btn').forEach(button => {
   button.addEventListener('click', () => {
     document.querySelectorAll('.repeat-btn').forEach(btn => btn.classList.remove('active'));
@@ -131,6 +148,7 @@ document.querySelectorAll('.repeat-btn').forEach(button => {
   });
 });
 
+// Tốc độ
 document.querySelectorAll('.speed-btn').forEach(button => {
   button.addEventListener('click', () => {
     document.querySelectorAll('.speed-btn').forEach(btn => btn.classList.remove('active'));
@@ -141,6 +159,15 @@ document.querySelectorAll('.speed-btn').forEach(button => {
   });
 });
 
+// Menu click âm thanh
+document.querySelectorAll('.menu-item').forEach(menu => {
+  menu.addEventListener('click', () => {
+    menuSound.currentTime = 0;
+    menuSound.play();
+  });
+});
+
+// Vietlott
 function generateVietlottNumbers(type) {
   const max = type === 'mega' ? 45 : 55;
   const pool = Array.from({ length: max }, (_, i) => i + 1);
