@@ -160,7 +160,7 @@ document.querySelectorAll('.speed-btn').forEach(button => {
 });
 
 // Menu click âm thanh
-document.querySelectorAll('.menu-item').forEach(menu => {
+document.querySelectorAll('.menu').forEach(menu => {
   menu.addEventListener('click', () => {
     menuSound.currentTime = 0;
     menuSound.play();
