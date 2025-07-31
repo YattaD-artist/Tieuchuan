@@ -455,41 +455,6 @@ const colors = [
       });
     });
     
-    // Tạo dãy số ngẫu nhiên không trùng
-function getRandomUniqueNumbers(count, max) {
-  const nums = Array.from({length: max}, (_, i) => i + 1);
-  for (let i = nums.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [nums[i], nums[j]] = [nums[j], nums[i]];
-  }
-  return nums.slice(0, count).sort((a, b) => a - b);
-}
-
-document.querySelectorAll('.vietlott-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const type = btn.getAttribute('data-type');
-    const maxNum = type === 'mega' ? 45 : 55;
-    const title = type === 'mega' ? "Tiêu chọn: Mega 6/45" : "Tiêu chọn: Power 6/55";
-    const numbers = getRandomUniqueNumbers(6, maxNum);
-
-    const container = document.getElementById('vietlottNumbers');
-    container.innerHTML = '';
-    numbers.forEach(num => {
-      const ball = document.createElement('div');
-      ball.className = 'vietlott-ball';
-      ball.textContent = num;
-      container.appendChild(ball);
-    });
-
-    document.getElementById('vietlottTitle').textContent = `🎯 ${title}`;
-    document.getElementById('vietlottOverlay').style.display = 'flex';
-  });
-});
-
-document.getElementById('vietlottClose').onclick = () => {
-  document.getElementById('vietlottOverlay').style.display = 'none';
-};
-
   </script>
   <!-- Overlay Vietlott -->
 <div id="vietlottOverlay">
