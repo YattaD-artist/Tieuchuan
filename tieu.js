@@ -186,7 +186,7 @@ document.querySelectorAll('.vietlott-btn').forEach(btn => {
     const type = btn.dataset.type;
     const result = generateVietlottNumbers(type);
     const container = document.getElementById('vietlottNumbers');
-    const title = document.getElementById('vietlottTitle');
+    const title = document.getElementById('resultText');
 
     container.innerHTML = '';
     result.forEach(num => {
@@ -196,11 +196,10 @@ document.querySelectorAll('.vietlott-btn').forEach(btn => {
       container.appendChild(ball);
     });
 
-    title.textContent = `Kết quả: ${type === 'mega' ? 'Mega 6/45' : 'Power 6/55'}`;
-    document.getElementById('vietlottOverlay').style.display = 'flex';
-  });
-});
+    title.textContent = `🎯 Kết quả: ${type === 'mega' ? 'Mega 6/45' : 'Power 6/55'}`;
+    document.getElementById('resultOverlay').style.display = 'flex';
 
-document.getElementById('vietlottClose').addEventListener('click', () => {
-  document.getElementById('vietlottOverlay').style.display = 'none';
+    noteSound.currentTime = 0;
+    noteSound.play();
+  });
 });
