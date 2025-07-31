@@ -233,7 +233,11 @@ Thôi</textarea>
     const canvas = document.getElementById("wheelCanvas");
     const ctx = canvas.getContext("2d");
     const radius = canvas.width / 2;
-    const colors = ["#2b303c", "#f6a451", "#b1844c", "#c19567"];
+const colors = [
+  "#ebdbf1", "#9204fc", "#88df5d", "#fcbaa6", "#904d0e",
+  "#f89723", "#1fbda3", "#b1ec63", "#be679a", "#fac27c", "#e1c943"
+];
+
 
     function updateNameList() {
       const input = document.getElementById("inputNames").value.trim();
@@ -287,7 +291,7 @@ Thôi</textarea>
 
       updateNameList();
       if (names.length < 2) {
-        alert("Cần ít nhất 2 tên.");
+        alert("Cần ít nhất 2 lựa chọn.");
         isSpinning = false;
         return;
       }
