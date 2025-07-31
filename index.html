@@ -91,23 +91,20 @@
 
     <div class="right">
       <h2>Viết danh sách đi, Tiêu chọn cho</h2>
-      <textarea id="inputNames">
-        Tiêu
+      <textarea id="inputNames">Tiêu
 Chọn
 Chỉ
 Có
 Chuẩn
-Thôi
-</textarea>
+Thôi</textarea>
 
-      <label>Số lần lặp danh sách:</label>
-      <input type="number" id="repeatCount" value="1" min="1" />
+      <label>Số lần lặp danh sách (tối đa 9):</label>
+      <input type="number" id="repeatCount" value="1" min="1" max="9" />
 
-      <label>Thời gian suy nghĩ (ms, >=3000):</label>
-      <input type="number" id="spinDurationInput" placeholder="Mặc định: 3000-5000" min="3000" />
+      <label>Thời gian suy nghĩ (1 → chậm):</label>
+      <input type="number" id="spinSpeedInput" value="1" min="1" max="10" />
 
-      <button id="drawButton">Khởi tạo</button>
-      <button id="spinButton" disabled>CHỌN NÀO TIÊU!</button>
+      <button id="spinButton">CHỌN NÀO TIÊU!</button>
       <div id="result"></div>
     </div>
   </div>
@@ -116,29 +113,22 @@ Thôi
     let names = [];
     let angle = 0;
     let isSpinning = false;
+
     const canvas = document.getElementById("wheelCanvas");
     const ctx = canvas.getContext("2d");
     const radius = canvas.width / 2;
 
-    document.getElementById("drawButton").onclick = () => {
+    // Lấy danh sách từ textarea và lặp lại theo repeatCount
+    function updateNameList() {
       const input = document.getElementById("inputNames").value.trim();
-      const repeat = parseInt(document.getElementById("repeatCount").value, 10) || 1;
-
-      let rawNames = input.split("\n").map(n => n.trim()).filter(n => n);
+      const repeat = Math.min(parseInt(document.getElementById("repeatCount").value, 10) || 1, 9);
+      const rawNames = input.split("\n").map(n => n.trim()).filter(n => n);
       names = [];
 
       for (let i = 0; i < repeat; i++) {
         names = names.concat(rawNames);
       }
-
-      if (names.length > 1) {
-        drawWheel();
-        document.getElementById("spinButton").disabled = false;
-        document.getElementById("result").textContent = '';
-      } else {
-        alert("Cần ít nhất 2 mục để quay.");
-      }
-    };
+    }
 
     function drawWheel() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -180,9 +170,17 @@ Thôi
       isSpinning = true;
       document.getElementById("result").textContent = '';
 
-      const userDuration = parseInt(document.getElementById("spinDurationInput").value, 10);
-      const baseTime = 3000 + Math.random() * 2000;
-      const spinTime = (userDuration && userDuration >= baseTime) ? userDuration : baseTime;
+      updateNameList();
+      if (names.length < 2) {
+        alert("Cần ít nhất 2 tên.");
+        isSpinning = false;
+        return;
+      }
+
+      drawWheel(); // luôn vẽ lại trước khi quay
+
+      const speedInput = Math.min(parseInt(document.getElementById("spinSpeedInput").value, 10) || 1, 10);
+      const spinTime = 3000 + (speedInput - 1) * 1000;
 
       const spinAngle = 10 + Math.random() * 10;
       const start = performance.now();
@@ -213,6 +211,22 @@ Thôi
       const winner = names[index];
       document.getElementById("result").textContent = `🎯 Kết quả: ${winner}`;
     }
+
+    // Tự khởi tạo khi load trang
+    window.onload = () => {
+      updateNameList();
+      drawWheel();
+    };
+
+    // Tự cập nhật khi sửa danh sách hoặc lặp lại
+    document.getElementById("inputNames").addEventListener("input", () => {
+      updateNameList();
+      drawWheel();
+    });
+    document.getElementById("repeatCount").addEventListener("input", () => {
+      updateNameList();
+      drawWheel();
+    });
   </script>
 </body>
 </html>
