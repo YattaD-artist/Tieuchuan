@@ -76,7 +76,7 @@ Khánh</textarea>
       names = input.split("\n").map(n => n.trim()).filter(n => n);
       if (names.length > 1) {
         drawWheel();
-        drawPointerImage(); // vẽ ảnh thay mũi tên
+        drawCenterImage(); // vẽ ảnh ở giữa
         document.getElementById("spinButton").disabled = false;
         document.getElementById("result").textContent = '';
       } else {
@@ -110,9 +110,9 @@ Khánh</textarea>
       }
     }
 
-    function drawPointerImage() {
-      const size = 50;
-      const x = radius + radius - size / 2; // bên phải canvas
+    function drawCenterImage() {
+      const size = 150; // 3x so với 50
+      const x = radius - size / 2;
       const y = radius - size / 2;
 
       if (pointerImg.complete) {
@@ -132,7 +132,7 @@ Khánh</textarea>
       drawWheel();
       ctx.restore();
 
-      drawPointerImage();
+      drawCenterImage(); // luôn vẽ lại hình ở giữa
     }
 
     document.getElementById("spinButton").onclick = () => {
@@ -165,7 +165,7 @@ Khánh</textarea>
 
     function showResult(finalAngle) {
       const sliceAngle = (2 * Math.PI) / names.length;
-      const adjusted = finalAngle % (2 * Math.PI); // mũi tên cố định bên phải: 0 rad
+      const adjusted = finalAngle % (2 * Math.PI); // mũi tên ảo hướng phải (0 rad)
       const index = Math.floor((2 * Math.PI - adjusted) / sliceAngle) % names.length;
       const winner = names[index];
       document.getElementById("result").textContent = `🎯 Kết quả: ${winner}`;
