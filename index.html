@@ -58,15 +58,25 @@
       justify-content: center;
       padding: 20px;
     }
+.right label {
+  margin-top: 20px;
+  display: block;
+  font-weight: bold;
+}
 
     textarea {
       width: 100%;
   padding: 10px;
   font-size: 16px;
-  resize: vertical;
-  line-height: 1.5;
-  height: calc(1.5em * 12 + 20px); /* 12 dòng + padding */
-  overflow-y: auto;
+  line-height: 1.5; /* mỗi dòng cao 1.5em */
+  resize: none; /* không cho người dùng kéo */
+  overflow-y: auto; /* hiện thanh cuộn khi vượt quá chiều cao */
+  min-height: calc(1.5em * 10); /* tối thiểu 10 dòng */
+  max-height: calc(1.5em * 15); /* tối đa 15 dòng */
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: height 0.2s ease;
     }
 
     button {
