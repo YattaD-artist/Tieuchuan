@@ -1,3 +1,5 @@
+const popSound = new Audio('Pop.mp3');
+
 let names = [];
 let angle = 0;
 let isSpinning = false;
@@ -119,21 +121,23 @@ document.getElementById("inputNames").addEventListener("input", () => {
   drawWheel();
 });
 
-document.querySelectorAll(".repeat-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".repeat-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    repeatCount = parseInt(btn.getAttribute("data-repeat"), 10);
-    updateNameList();
-    drawWheel();
+document.querySelectorAll('.repeat-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.repeat-btn').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+    repeatCount = parseInt(button.dataset.repeat);
+    popSound.currentTime = 0;
+    popSound.play();
   });
 });
 
-document.querySelectorAll(".speed-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".speed-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    spinSpeed = parseInt(btn.getAttribute("data-speed"), 10);
+document.querySelectorAll('.speed-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.speed-btn').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+    spinSpeed = parseInt(button.dataset.speed);
+    popSound.currentTime = 0;
+    popSound.play();
   });
 });
 
