@@ -1,3 +1,4 @@
+Đúng chưa?
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -255,24 +256,6 @@ box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 .vietlott-ball:hover {
   transform: scale(1.1);
 }
-    
-#vietlottReroll {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 14px;
-  background-color: #e4ac2f;
-  color: #2b1a00;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-#vietlottReroll:hover {
-  transform: scale(1.05);
-  background-color: #f5c54a;
-}
 
   </style>
 </head>
@@ -473,59 +456,40 @@ const colors = [
       });
     });
     
-// ======= Tạo số ngẫu nhiên không trùng =========
+    // Tạo dãy số ngẫu nhiên không trùng
 function getRandomUniqueNumbers(count, max) {
-  const numbers = [];
-  while (numbers.length < count) {
-    const num = Math.floor(Math.random() * max) + 1;
-    if (!numbers.includes(num)) numbers.push(num);
+  const nums = Array.from({length: max}, (_, i) => i + 1);
+  for (let i = nums.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [nums[i], nums[j]] = [nums[j], nums[i]];
   }
-  return numbers.sort((a, b) => a - b);
+  return nums.slice(0, count).sort((a, b) => a - b);
 }
 
-// ======= Biến lưu loại xổ số hiện tại =========
-let currentMax = 45;
-let currentTitle = "Tiêu chọn: Mega 6/45";
-
-// ======= Hàm tạo và hiển thị số trên giao diện =========
-function renderVietlottNumbers(maxNum, title) {
-  const numbers = getRandomUniqueNumbers(6, maxNum);
-  const container = document.getElementById('vietlottNumbers');
-  container.innerHTML = '';
-  numbers.forEach(num => {
-    const ball = document.createElement('div');
-    ball.className = 'vietlott-ball';
-    ball.textContent = num;
-    container.appendChild(ball);
-  });
-  document.getElementById('vietlottTitle').textContent = `🎯 ${title}`;
-}
-
-// ======= Bắt sự kiện click 2 nút xổ số =========
 document.querySelectorAll('.vietlott-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const type = btn.getAttribute('data-type');
-    if (type === 'mega') {
-      currentMax = 45;
-      currentTitle = "Tiêu chọn: Mega 6/45";
-    } else if (type === 'power') {
-      currentMax = 55;
-      currentTitle = "Tiêu chọn: Power 6/55";
-    }
-    renderVietlottNumbers(currentMax, currentTitle);
+    const maxNum = type === 'mega' ? 45 : 55;
+    const title = type === 'mega' ? "Tiêu chọn: Mega 6/45" : "Tiêu chọn: Power 6/55";
+    const numbers = getRandomUniqueNumbers(6, maxNum);
+
+    const container = document.getElementById('vietlottNumbers');
+    container.innerHTML = '';
+    numbers.forEach(num => {
+      const ball = document.createElement('div');
+      ball.className = 'vietlott-ball';
+      ball.textContent = num;
+      container.appendChild(ball);
+    });
+
+    document.getElementById('vietlottTitle').textContent = `🎯 ${title}`;
     document.getElementById('vietlottOverlay').style.display = 'flex';
   });
 });
 
-// ======= Nút "Chọn lại" =========
-document.getElementById('vietlottReroll').addEventListener('click', () => {
-  renderVietlottNumbers(currentMax, currentTitle);
-});
-
-// ======= Nút đóng overlay =========
-document.getElementById('vietlottClose').addEventListener('click', () => {
+document.getElementById('vietlottClose').onclick = () => {
   document.getElementById('vietlottOverlay').style.display = 'none';
-});
+};
 
   </script>
   <!-- Overlay Vietlott -->
@@ -533,8 +497,7 @@ document.getElementById('vietlottClose').addEventListener('click', () => {
   <div id="vietlottBox">
     <div id="vietlottClose">✖</div>
     <h3 id="vietlottTitle">Kết quả</h3>
-<div class="vietlott-numbers" id="vietlottNumbers"></div>
-<button id="vietlottReroll">Chọn lại</button>
+    <div class="vietlott-numbers" id="vietlottNumbers"></div>
   </div>
 </div>
 
