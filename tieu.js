@@ -181,28 +181,29 @@ function generateVietlottNumbers(type) {
 }
 
 // ==== Nút Vietlott Mega / Power ====
-document.querySelectorAll('.menu .vietlott-btn').forEach(btn => {
+document.querySelectorAll('.vietlott-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    menuSound.currentTime = 0;
-    menuSound.play();
-
     const type = btn.dataset.type;
     const result = generateVietlottNumbers(type);
-    const container = document.getElementById('vietlottNumbers');
-    const title = document.getElementById('vietlottTitle');
 
-    document.getElementById("resultText").textContent = "";
-    container.innerHTML = '';
+    const overlay = document.getElementById('resultOverlay');
+    const resultText = document.getElementById('resultText');
+    const numbersContainer = document.getElementById('vietlottNumbers');
+
+    // Reset nội dung overlay
+    resultText.innerHTML = `🎱 <b>Kết quả ${type === 'mega' ? 'Mega 6/45' : 'Power 6/55'}:</b>`;
+    numbersContainer.innerHTML = '';
+
     result.forEach(num => {
       const ball = document.createElement('div');
       ball.className = 'vietlott-ball';
       ball.textContent = num;
-      container.appendChild(ball);
+      numbersContainer.appendChild(ball);
     });
 
-    title.textContent = `🎯 Kết quả: ${type === 'mega' ? 'Mega 6/45' : 'Power 6/55'}`;
-    document.getElementById('resultOverlay').style.display = 'flex';
+    overlay.style.display = 'flex';
     noteSound.currentTime = 0;
     noteSound.play();
   });
 });
+
