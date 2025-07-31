@@ -1,0 +1,251 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: sans-serif;
+  background: #efeacf;
+  overflow: hidden;
+}
+
+.layout {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+}
+
+#wheelCanvas {
+  max-width: 100%;
+  max-height: 100%;
+  background: #fff;
+  border-radius: 50%;
+  z-index: 1;
+  border: 10px solid #2ecc71;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+#centerImage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  transform: translate(-50%, -50%);
+  background-image: url('Tieu.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.right label {
+  margin-top: 20px;
+  display: block;
+  font-weight: bold;
+  color: #7c5013;
+}
+
+h2 {
+  color: #7c5013;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+  resize: none;
+  overflow-y: auto;
+  min-height: calc(1.5em * 10);
+  max-height: calc(1.5em * 15);
+  border: 2px solid #91cb3f;
+  border-radius: 6px;
+  background: #fffbe0;
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background-color: #91cb3f;
+  color: #1a1a1a;
+  transition: background-color 0.2s ease;
+}
+
+button:hover:not(#spinButton) {
+  transform: scale(1.2);
+}
+
+#repeatButtons, #speedButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.repeat-btn.active {
+  background-color: #00a79b;
+  color: white;
+  font-weight: bold;
+}
+
+.speed-btn.active {
+  background-color: #fcca5c;
+  color: #000;
+  font-weight: bold;
+}
+
+#spinButton {
+  background-color: #e7a81e;
+  margin-top: 20px;
+}
+
+#spinButton:hover {
+  background-color: #fcca5c;
+}
+
+/* Overlay Result Box */
+#resultOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#resultBox {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  min-width: 300px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+#resultBox h3 {
+  font-size: 24px;
+  margin: 0;
+  color: #7c5013;
+}
+
+#closeResult {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+#closeResult:hover {
+  color: #000;
+}
+
+.vietlott-btn {
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #fcca5c;
+  color: #260b03;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.vietlott-btn:hover {
+  transform: scale(1.1);
+  background-color: #ffd77e;
+}
+
+#vietlottOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#vietlottBox {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  min-width: 300px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+#vietlottBox h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #7c5013;
+}
+
+#vietlottClose {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+#vietlottClose:hover {
+  color: #000;
+}
+
+.vietlott-numbers {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.vietlott-ball {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #91cb3f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+  pointer-events: none;
+}
+
+.vietlott-ball:hover {
+  transform: scale(1.1);
+}
