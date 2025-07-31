@@ -5,6 +5,7 @@ const goSound = new Audio('GO.mp3');
 const rollSound = new Audio('Roll.mp3');
 const noteSound = new Audio('Note.mp3');
 
+// ==== Biến toàn cục ====
 let names = [];
 let angle = 0;
 let isSpinning = false;
@@ -20,16 +21,17 @@ const colors = [
   "#f1dcca", "#e6ede3", "#f7e19a", "#cddae5"
 ];
 
+// ==== Cập nhật danh sách tên người chơi ====
 function updateNameList() {
   const input = document.getElementById("inputNames").value.trim();
   const rawNames = input.split("\n").map(n => n.trim()).filter(n => n);
   names = [];
-
   for (let i = 0; i < repeatCount; i++) {
     names = names.concat(rawNames);
   }
 }
 
+// ==== Vẽ bánh xe ====
 function drawWheel() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const sliceAngle = (2 * Math.PI) / names.length;
@@ -65,10 +67,13 @@ function drawSpinningWheel(rotation) {
   ctx.restore();
 }
 
+// ==== Bắt đầu quay ====
 document.getElementById("spinButton").onclick = () => {
   if (isSpinning) return;
   isSpinning = true;
-  document.getElementById("resultOverlay").style.display = 'none';
+
+  goSound.currentTime = 0;
+  goSound.play();
 
   updateNameList();
   if (names.length < 2) {
@@ -78,11 +83,8 @@ document.getElementById("spinButton").onclick = () => {
   }
 
   drawWheel();
-  goSound.currentTime = 0;
-  goSound.play();
-
-  rollSound.loop = true;
   rollSound.currentTime = 0;
+  rollSound.loop = true;
   rollSound.play();
 
   const spinTime = 3000 + (spinSpeed - 1) * 1000;
@@ -100,7 +102,7 @@ document.getElementById("spinButton").onclick = () => {
     if (progress < 1) {
       requestAnimationFrame(animateSpin);
     } else {
-      rollSound.pause(); // Dừng âm thanh quay
+      rollSound.pause();
       isSpinning = false;
       showResult(angle);
     }
@@ -109,6 +111,7 @@ document.getElementById("spinButton").onclick = () => {
   requestAnimationFrame(animateSpin);
 };
 
+// ==== Hiện kết quả ====
 function showResult(finalAngle) {
   const sliceAngle = (2 * Math.PI) / names.length;
   const adjusted = finalAngle % (2 * Math.PI);
@@ -116,28 +119,32 @@ function showResult(finalAngle) {
   const winner = names[index];
 
   document.getElementById("resultText").textContent = `🎯 Tiêu chọn: ${winner}`;
-  document.getElementById("resultOverlay").style.display = 'flex';
+  document.getElementById("vietlottNumbers").innerHTML = "";
+  document.getElementById("vietlottTitle").textContent = "";
 
+  document.getElementById("resultOverlay").style.display = 'flex';
   noteSound.currentTime = 0;
   noteSound.play();
 }
 
+// ==== Đóng overlay ====
 document.getElementById("closeResult").onclick = () => {
   document.getElementById("resultOverlay").style.display = 'none';
 };
 
+// ==== Tải lại khi mở trang ====
 window.onload = () => {
   updateNameList();
   drawWheel();
 };
 
-// Cập nhật danh sách khi nhập tên
+// ==== Khi thay đổi input ====
 document.getElementById("inputNames").addEventListener("input", () => {
   updateNameList();
   drawWheel();
 });
 
-// Lặp số
+// ==== Nút chọn số lần lặp ====
 document.querySelectorAll('.repeat-btn').forEach(button => {
   button.addEventListener('click', () => {
     document.querySelectorAll('.repeat-btn').forEach(btn => btn.classList.remove('active'));
@@ -148,7 +155,7 @@ document.querySelectorAll('.repeat-btn').forEach(button => {
   });
 });
 
-// Tốc độ
+// ==== Nút chọn tốc độ ====
 document.querySelectorAll('.speed-btn').forEach(button => {
   button.addEventListener('click', () => {
     document.querySelectorAll('.speed-btn').forEach(btn => btn.classList.remove('active'));
@@ -159,15 +166,7 @@ document.querySelectorAll('.speed-btn').forEach(button => {
   });
 });
 
-// Menu click âm thanh
-document.querySelectorAll('.menu').forEach(menu => {
-  menu.addEventListener('click', () => {
-    menuSound.currentTime = 0;
-    menuSound.play();
-  });
-});
-
-// Vietlott
+// ==== Sinh số Vietlott ====
 function generateVietlottNumbers(type) {
   const max = type === 'mega' ? 45 : 55;
   const pool = Array.from({ length: max }, (_, i) => i + 1);
@@ -181,13 +180,18 @@ function generateVietlottNumbers(type) {
   return selected.sort((a, b) => a - b);
 }
 
-document.querySelectorAll('.vietlott-btn').forEach(btn => {
+// ==== Nút Vietlott Mega / Power ====
+document.querySelectorAll('.menu .vietlott-btn').forEach(btn => {
   btn.addEventListener('click', () => {
+    menuSound.currentTime = 0;
+    menuSound.play();
+
     const type = btn.dataset.type;
     const result = generateVietlottNumbers(type);
     const container = document.getElementById('vietlottNumbers');
-    const title = document.getElementById('resultText');
+    const title = document.getElementById('vietlottTitle');
 
+    document.getElementById("resultText").textContent = "";
     container.innerHTML = '';
     result.forEach(num => {
       const ball = document.createElement('div');
@@ -198,7 +202,6 @@ document.querySelectorAll('.vietlott-btn').forEach(btn => {
 
     title.textContent = `🎯 Kết quả: ${type === 'mega' ? 'Mega 6/45' : 'Power 6/55'}`;
     document.getElementById('resultOverlay').style.display = 'flex';
-
     noteSound.currentTime = 0;
     noteSound.play();
   });
