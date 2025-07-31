@@ -142,6 +142,8 @@ document.querySelectorAll('.repeat-btn').forEach(button => {
     document.querySelectorAll('.repeat-btn').forEach(btn => btn.classList.remove('active'));
     button.classList.add('active');
     repeatCount = parseInt(button.dataset.repeat);
+  updateNameList();
+  drawWheel();
     popSound.currentTime = 0;
     popSound.play();
   });
