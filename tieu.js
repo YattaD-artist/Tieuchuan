@@ -1,0 +1,138 @@
+let names = [];
+let angle = 0;
+let isSpinning = false;
+let repeatCount = 1;
+let spinSpeed = 1;
+
+const canvas = document.getElementById("wheelCanvas");
+const ctx = canvas.getContext("2d");
+const radius = canvas.width / 2;
+
+const colors = [
+  "#d5c3c7", "#ced6bd", "#f7eae4",
+  "#f1dcca", "#e6ede3", "#f7e19a", "#cddae5"
+];
+
+function updateNameList() {
+  const input = document.getElementById("inputNames").value.trim();
+  const rawNames = input.split("\n").map(n => n.trim()).filter(n => n);
+  names = [];
+
+  for (let i = 0; i < repeatCount; i++) {
+    names = names.concat(rawNames);
+  }
+}
+
+function drawWheel() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const sliceAngle = (2 * Math.PI) / names.length;
+
+  for (let i = 0; i < names.length; i++) {
+    const startAngle = i * sliceAngle;
+    const endAngle = startAngle + sliceAngle;
+
+    ctx.beginPath();
+    ctx.moveTo(radius, radius);
+    ctx.arc(radius, radius, radius, startAngle, endAngle);
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fill();
+
+    ctx.save();
+    ctx.translate(radius, radius);
+    ctx.rotate(startAngle + sliceAngle / 2);
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#260b03";
+    ctx.font = "16px sans-serif";
+    ctx.fillText(names[i], radius - 10, 5);
+    ctx.restore();
+  }
+}
+
+function drawSpinningWheel(rotation) {
+  ctx.save();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.translate(radius, radius);
+  ctx.rotate(rotation);
+  ctx.translate(-radius, -radius);
+  drawWheel();
+  ctx.restore();
+}
+
+document.getElementById("spinButton").onclick = () => {
+  if (isSpinning) return;
+  isSpinning = true;
+  document.getElementById("resultOverlay").style.display = 'none';
+
+  updateNameList();
+  if (names.length < 2) {
+    alert("Cần ít nhất 2 lựa chọn.");
+    isSpinning = false;
+    return;
+  }
+
+  drawWheel();
+
+  const spinTime = 3000 + (spinSpeed - 1) * 1000;
+  const spinAngle = 10 + Math.random() * 10;
+  const start = performance.now();
+
+  function animateSpin(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / spinTime, 1);
+    const easing = 1 - Math.pow(1 - progress, 3);
+    angle = easing * spinAngle * 2 * Math.PI;
+
+    drawSpinningWheel(angle);
+
+    if (progress < 1) {
+      requestAnimationFrame(animateSpin);
+    } else {
+      isSpinning = false;
+      showResult(angle);
+    }
+  }
+
+  requestAnimationFrame(animateSpin);
+};
+
+function showResult(finalAngle) {
+  const sliceAngle = (2 * Math.PI) / names.length;
+  const adjusted = finalAngle % (2 * Math.PI);
+  const index = Math.floor((2 * Math.PI - adjusted) / sliceAngle) % names.length;
+  const winner = names[index];
+
+  document.getElementById("resultText").textContent = `🎯 Tiêu chọn: ${winner}`;
+  document.getElementById("resultOverlay").style.display = 'flex';
+}
+
+document.getElementById("closeResult").onclick = () => {
+  document.getElementById("resultOverlay").style.display = 'none';
+};
+
+window.onload = () => {
+  updateNameList();
+  drawWheel();
+};
+
+document.getElementById("inputNames").addEventListener("input", () => {
+  updateNameList();
+  drawWheel();
+});
+
+document.querySelectorAll(".repeat-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".repeat-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    repeatCount = parseInt(btn.getAttribute("data-repeat"), 10);
+    updateNameList();
+    drawWheel();
+  });
+});
+
+document.querySelectorAll(".speed-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".speed-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    spinSpeed = parseInt(btn.getAttribute("data-speed"), 10);
+  });
+});
