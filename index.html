@@ -7,31 +7,30 @@
   <link rel="stylesheet" href="tieu.css" />
 </head>
 <body>
-
-  <!-- Đổi class: menu gọn gàng -->
   <div class="menu">
-    <button class="vietlott-btn" data-type="mega">Tiêu chọn: Mega 6/45</button>
-    <button class="vietlott-btn" data-type="power">Tiêu chọn: Power 6/55</button>
-  </div>
+  <button class="vietlott-btn" data-type="mega">Tiêu chọn: Mega 6/45</button>
+  <button class="vietlott-btn" data-type="power">Tiêu chọn: Power 6/55</button>
+</div>
 
   <div class="layout">
     <div class="left">
-      <div style="position: absolute; bottom: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 3;"></div>
+      <div style="position: absolute; bottom: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 3;">
+              </div>
       <canvas id="wheelCanvas" width="500" height="500"></canvas>
       <div id="centerImage"></div>
     </div>
 
     <div class="right">
       <h2>Viết danh sách đi, Tiêu chọn cho</h2>
-      <div class="input-wrap">
-        <textarea id="inputNames">Tiêu
+    <div class="input-wrap">
+  <textarea id="inputNames">Tiêu
 Chọn
 Chỉ
 Có
 Chuẩn
 Thôi</textarea>
-        <img src="Main.webp" alt="Main Image" id="mainImage" />
-      </div>
+  <img src="Main.webp" alt="Main Image" id="mainImage" />
+</div>
 
       <label>Số lần lặp danh sách:</label>
       <div id="repeatButtons">
@@ -60,12 +59,20 @@ Thôi</textarea>
     </div>
   </div>
 
-  <!-- GỘP overlay kết quả vào 1 khối duy nhất -->
+  <!-- Kết quả dạng overlay -->
   <div id="resultOverlay">
     <div id="resultBox">
       <div id="closeResult">✖</div>
-      <h3 id="resultTitle">Kết quả</h3>
-      <div id="resultContent">Tiêu chọn: ...</div>
+      <h3 id="resultText">Tiêu chọn: ...</h3>
+    </div>
+  </div>
+
+  <!-- Kết quả Vietlott overlay -->
+  <div id="vietlottOverlay">
+    <div id="vietlottBox">
+      <div id="vietlottClose">✖</div>
+      <h3 id="vietlottTitle">Kết quả</h3>
+      <div class="vietlott-numbers" id="vietlottNumbers"></div>
     </div>
   </div>
 
