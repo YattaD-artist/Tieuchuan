@@ -277,3 +277,59 @@ button:hover:not(#spinButton) {
   background-color: #ffc107;
   transform: scale(1.1);
 }
+
+/*ĐIệN THOẠI*/
+@media (max-width: 768px) {
+  .vietlott-menu {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    align-items: center;
+  }
+
+  .vietlott-menu .vietlott-btn {
+    width: 90%;
+    font-size: 1rem;
+  }
+
+  .layout {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px; /* tránh đụng menu */
+  }
+
+  .left, .right {
+    width: 95%;
+  }
+
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  #inputNames {
+    width: 100%;
+    height: 120px;
+  }
+
+  #repeatButtons, #speedButtons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #repeatButtons button,
+  #speedButtons button {
+    margin: 5px;
+  }
+
+  #spinButton {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+  }
+
+  #resultBox,
+  #vietlottBox {
+    width: 90%;
+  }
+}
