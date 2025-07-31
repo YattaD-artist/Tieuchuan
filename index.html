@@ -81,7 +81,6 @@
       overflow-y: auto;
       min-height: calc(1.5em * 10);
       max-height: calc(1.5em * 15);
-      box-sizing: border-box;
       border: 2px solid #91cb3f;
       border-radius: 6px;
       background: #fffbe0;
@@ -95,10 +94,10 @@
       border-radius: 6px;
       background-color: #91cb3f;
       color: #1a1a1a;
-      transition: transform 0.2s ease, background-color 0.2s ease;
+      transition: background-color 0.2s ease;
     }
 
-    button:hover {
+    button:hover:not(#spinButton) {
       transform: scale(1.2);
     }
 
@@ -130,11 +129,45 @@
       background-color: #fcca5c;
     }
 
-    #result {
-      font-size: 22px;
-      font-weight: bold;
+    /* Overlay Result Box */
+    #resultOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #resultBox {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+      min-width: 300px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    #resultBox h3 {
+      font-size: 24px;
+      margin: 0;
       color: #7c5013;
-      margin-top: 20px;
+    }
+
+    #closeResult {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #888;
+    }
+
+    #closeResult:hover {
+      color: #000;
     }
   </style>
 </head>
@@ -179,7 +212,14 @@ Thôi</textarea>
       </div>
 
       <button id="spinButton">CHỌN NÀO TIÊU!</button>
-      <div id="result"></div>
+    </div>
+  </div>
+
+  <!-- Kết quả dạng overlay -->
+  <div id="resultOverlay">
+    <div id="resultBox">
+      <div id="closeResult">✖</div>
+      <h3 id="resultText">Tiêu chọn: ...</h3>
     </div>
   </div>
 
@@ -193,7 +233,6 @@ Thôi</textarea>
     const canvas = document.getElementById("wheelCanvas");
     const ctx = canvas.getContext("2d");
     const radius = canvas.width / 2;
-
     const colors = ["#2b303c", "#f6a451", "#b1844c", "#c19567"];
 
     function updateNameList() {
@@ -244,7 +283,7 @@ Thôi</textarea>
     document.getElementById("spinButton").onclick = () => {
       if (isSpinning) return;
       isSpinning = true;
-      document.getElementById("result").textContent = '';
+      document.getElementById("resultOverlay").style.display = 'none';
 
       updateNameList();
       if (names.length < 2) {
@@ -283,9 +322,17 @@ Thôi</textarea>
       const adjusted = finalAngle % (2 * Math.PI);
       const index = Math.floor((2 * Math.PI - adjusted) / sliceAngle) % names.length;
       const winner = names[index];
-      document.getElementById("result").textContent = `🎯 Tiêu chọn: ${winner}`;
+
+      document.getElementById("resultText").textContent = `🎯 Tiêu chọn: ${winner}`;
+      document.getElementById("resultOverlay").style.display = 'flex';
     }
 
+    // Đóng overlay kết quả
+    document.getElementById("closeResult").onclick = () => {
+      document.getElementById("resultOverlay").style.display = 'none';
+    };
+
+    // Khởi tạo ban đầu
     window.onload = () => {
       updateNameList();
       drawWheel();
