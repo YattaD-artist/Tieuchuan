@@ -136,3 +136,40 @@ document.querySelectorAll(".speed-btn").forEach(btn => {
     spinSpeed = parseInt(btn.getAttribute("data-speed"), 10);
   });
 });
+
+function generateVietlottNumbers(type) {
+  const max = type === 'mega' ? 45 : 55;
+  const pool = Array.from({ length: max }, (_, i) => i + 1);
+  const selected = [];
+
+  while (selected.length < 6) {
+    const index = Math.floor(Math.random() * pool.length);
+    selected.push(pool.splice(index, 1)[0]);
+  }
+
+  return selected.sort((a, b) => a - b);
+}
+
+document.querySelectorAll('.vietlott-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const type = btn.dataset.type;
+    const result = generateVietlottNumbers(type);
+    const container = document.getElementById('vietlottNumbers');
+    const title = document.getElementById('vietlottTitle');
+
+    container.innerHTML = '';
+    result.forEach(num => {
+      const ball = document.createElement('div');
+      ball.className = 'vietlott-ball';
+      ball.textContent = num;
+      container.appendChild(ball);
+    });
+
+    title.textContent = `Kết quả: ${type === 'mega' ? 'Mega 6/45' : 'Power 6/55'}`;
+    document.getElementById('vietlottOverlay').style.display = 'flex';
+  });
+});
+
+document.getElementById('vietlottClose').addEventListener('click', () => {
+  document.getElementById('vietlottOverlay').style.display = 'none';
+});
