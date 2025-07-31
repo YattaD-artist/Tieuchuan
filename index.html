@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bánh Xe May Mắn</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      font-family: sans-serif; background: #f0f0f0;
+      overflow: hidden;
+    }
+    .layout {
+      display: flex; height: 100%; width: 100%;
+    }
+    .left, .right {
+      flex: 1; padding: 20px;
+    }
+    .left {
+      display: flex; justify-content: center; align-items: center; position: relative;
+    }
+    #wheelCanvas {
+      max-width: 100%; max-height: 90%;
+      background: #fff; border-radius: 50%;
+    }
+    .right {
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    textarea {
+      width: 100%; height: 150px; resize: none;
+      font-size: 16px; padding: 10px; margin-bottom: 10px;
+    }
+    button {
+      padding: 10px; margin: 5px 0;
+      font-size: 16px; cursor: pointer;
+    }
+    #result {
+      font-size: 22px; font-weight: bold;
+      color: green; margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <div class="left">
+      <canvas id="wheelCanvas" width="500" height="500"></canvas>
+    </div>
+    <div class="right">
+      <h2>Danh sách tên</h2>
+      <textarea id="inputNames">An
+Bình
+Chi
+Dũng
+Hoa
+Khánh</textarea>
+      <button id="drawButton">Tạo Vòng Quay</button>
+      <button id="spinButton" disabled>QUAY!</button>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    let names = [];
+    let angle = 0;
+    let isSpinning = false;
+    const canvas = document.getElementById("wheelCanvas");
+    const ctx = canvas.getContext("2d");
+    const radius = canvas.width / 2;
+
+    const pointerImg = new Image();
+    pointerImg.src = "Tieu.webp";
+
+    document.getElementById("drawButton").onclick = () => {
+      const input = document.getElementById("inputNames").value.trim();
+      names = input.split("\n").map(n => n.trim()).filter(n => n);
+      if (names.length > 1) {
+        drawWheel();
+        drawPointerImage(); // vẽ ảnh thay mũi tên
+        document.getElementById("spinButton").disabled = false;
+        document.getElementById("result").textContent = '';
+      } else {
+        alert("Cần ít nhất 2 mục để quay.");
+      }
+    };
+
+    function drawWheel() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const sliceAngle = (2 * Math.PI) / names.length;
+
+      for (let i = 0; i < names.length; i++) {
+        const startAngle = i * sliceAngle;
+        const endAngle = startAngle + sliceAngle;
+
+        ctx.beginPath();
+        ctx.moveTo(radius, radius);
+        ctx.arc(radius, radius, radius, startAngle, endAngle);
+        ctx.fillStyle = i % 2 === 0 ? "#3498db" : "#9b59b6";
+        ctx.fill();
+
+        // Tên
+        ctx.save();
+        ctx.translate(radius, radius);
+        ctx.rotate(startAngle + sliceAngle / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#fff";
+        ctx.font = "16px sans-serif";
+        ctx.fillText(names[i], radius - 10, 5);
+        ctx.restore();
+      }
+    }
+
+    function drawPointerImage() {
+      const size = 50;
+      const x = radius + radius - size / 2; // bên phải canvas
+      const y = radius - size / 2;
+
+      if (pointerImg.complete) {
+        ctx.drawImage(pointerImg, x, y, size, size);
+      } else {
+        pointerImg.onload = () => ctx.drawImage(pointerImg, x, y, size, size);
+      }
+    }
+
+    function drawSpinningWheel(rotation) {
+      ctx.save();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.translate(radius, radius);
+      ctx.rotate(rotation);
+      ctx.translate(-radius, -radius);
+      drawWheel();
+      ctx.restore();
+
+      drawPointerImage();
+    }
+
+    document.getElementById("spinButton").onclick = () => {
+      if (isSpinning) return;
+
+      isSpinning = true;
+      document.getElementById("result").textContent = '';
+      const spinTime = 3000 + Math.random() * 2000;
+      const spinAngle = 10 + Math.random() * 10;
+      const start = performance.now();
+
+      function animateSpin(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / spinTime, 1);
+        const easing = 1 - Math.pow(1 - progress, 3);
+        angle = easing * spinAngle * 2 * Math.PI;
+
+        drawSpinningWheel(angle);
+
+        if (progress < 1) {
+          requestAnimationFrame(animateSpin);
+        } else {
+          isSpinning = false;
+          showResult(angle);
+        }
+      }
+
+      requestAnimationFrame(animateSpin);
+    };
+
+    function showResult(finalAngle) {
+      const sliceAngle = (2 * Math.PI) / names.length;
+      const adjusted = finalAngle % (2 * Math.PI); // mũi tên cố định bên phải: 0 rad
+      const index = Math.floor((2 * Math.PI - adjusted) / sliceAngle) % names.length;
+      const winner = names[index];
+      document.getElementById("result").textContent = `🎯 Kết quả: ${winner}`;
+    }
+  </script>
+</body>
+</html>
