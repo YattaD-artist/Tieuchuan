@@ -368,6 +368,55 @@ button:hover:not(#spinButton) {
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
+/* 1) Fix nút tắt "X" cho ABCD giống các overlay khác */
+#closeAbcd {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+  z-index: 1;
+}
+#closeAbcd:hover {
+  color: #000;
+}
+
+/* 2) Phóng to input số lượng gấp đôi */
+#questionCount {
+  font-size: 32px;       /* gấp đôi so với mặc định ~16px */
+  padding: 12px 16px;    /* tăng khoảng trống cho cân đối */
+  width: 120px;          /* đủ rộng để hiển thị số to */
+  text-align: center;
+  border: 2px solid #91cb3f;
+  border-radius: 6px;
+}
+
+/* 3) Hiển thị kết quả dạng “bảng” */
+#abcdResult {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* 4 cột như Excel */
+  gap: 10px;
+  margin-top: 20px;
+}
+#abcdResult .abcd-cell {
+  background: #fff;
+  border: 1px solid #91cb3f;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 18px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#abcdResult {
+  display: grid;
+  /* Mặc định 5 cột nếu chưa set biến --cols */
+  grid-template-columns: repeat(var(--cols, 5), 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
 
 /*ĐIệN THOẠI*/
 @media (max-width: 768px) {
