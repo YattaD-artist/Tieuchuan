@@ -164,14 +164,7 @@ textarea {
 
 
 /* Vietlott */
-.vietlott-menu { display: flex; gap: 20px; margin-bottom: 10px; }
-.vietlott-btn {
-  padding: 10px 15px; font-size: 14px;
-  border-radius:6px; background:#ffd966;
-  color:#260b03; font-weight:bold;
-  transition: transform .2s, background-color .2s;
-}
-.vietlott-btn:hover { background:#ffc107; transform:scale(1.1); }
+
 .vietlott-numbers {
   display: flex; flex-wrap: wrap; justify-content: center; gap:10px;
   margin-top:20px;
