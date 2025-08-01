@@ -346,6 +346,28 @@ button:hover:not(#spinButton) {
   background-color: #ffc107;
   transform: scale(1.1);
 }
+/* Overlay nhập số lượng câu hỏi ABCD */
+#abcdOverlay {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;               /* Ẩn ban đầu */
+  justify-content: center;     /* Canh giữa ngang */
+  align-items: center;         /* Canh giữa dọc */
+  z-index: 9999;               /* Đảm bảo nằm trên cùng */
+}
+
+#abcdOverlay .overlay-box {
+  max-width: 600px;
+  text-align: center;
+  background: #fff;            /* Nền hộp nhập liệu */
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
 
 /*ĐIệN THOẠI*/
 @media (max-width: 768px) {
