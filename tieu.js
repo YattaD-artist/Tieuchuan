@@ -172,7 +172,7 @@ function generateVietlottNumbers(type) {
   return selected.sort((a, b) => a - b);
 }
 
-document.querySelectorAll('.menu-btn').forEach(btn => {
+document.querySelectorAll('.vietlott-menu .menu-btn').forEach(btn => {
   btn.addEventListener('click', () => {
         menuSound.currentTime = 0;
     menuSound.play();
