@@ -1,8 +1,10 @@
+// Âm thanh
 const popSound = new Audio('Pop.mp3');
 const menuSound = new Audio('Menu.mp3');
 const goSound = new Audio('GO.mp3');
 const noteSound = new Audio('Note.mp3');
 
+// Biến toàn cục
 let names = [];
 let angle = 0;
 let isSpinning = false;
@@ -13,26 +15,22 @@ const canvas = document.getElementById("wheelCanvas");
 const ctx = canvas.getContext("2d");
 const radius = canvas.width / 2;
 
-const colors = [
-  "#d5c3c7", "#ced6bd", "#f7eae4",
-  "#f1dcca", "#e6ede3", "#f7e19a", "#cddae5"
-];
+const colors = ["#d5c3c7", "#ced6bd", "#f7eae4", "#f1dcca", "#e6ede3", "#f7e19a", "#cddae5"];
 
+// ======================= CẬP NHẬT DANH SÁCH ===========================
 function updateNameList() {
   const input = document.getElementById("inputNames").value.trim();
   const rawNames = input.split("\n").map(n => n.trim()).filter(n => n);
   names = [];
-
-  for (let i = 0; i < repeatCount; i++) {
-    names = names.concat(rawNames);
-  }
+  for (let i = 0; i < repeatCount; i++) names.push(...rawNames);
 }
 
+// ========================= VẼ VÒNG QUAY ==============================
 function drawWheel() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const sliceAngle = (2 * Math.PI) / names.length;
 
-  for (let i = 0; i < names.length; i++) {
+  names.forEach((name, i) => {
     const startAngle = i * sliceAngle;
     const endAngle = startAngle + sliceAngle;
 
@@ -48,11 +46,12 @@ function drawWheel() {
     ctx.textAlign = "right";
     ctx.fillStyle = "#260b03";
     ctx.font = "16px sans-serif";
-    ctx.fillText(names[i], radius - 10, 5);
+    ctx.fillText(name, radius - 10, 5);
     ctx.restore();
-  }
+  });
 }
 
+// ====================== VẼ VÒNG KHI QUAY =============================
 function drawSpinningWheel(rotation) {
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -63,14 +62,16 @@ function drawSpinningWheel(rotation) {
   ctx.restore();
 }
 
+// ======================= BẮT ĐẦU QUAY ===============================
 document.getElementById("spinButton").onclick = () => {
-    goSound.currentTime = 0;
-  goSound.play();
   if (isSpinning) return;
+  goSound.currentTime = 0;
+  goSound.play();
+
   isSpinning = true;
   document.getElementById("resultOverlay").style.display = 'none';
-
   updateNameList();
+
   if (names.length < 2) {
     alert("Cần ít nhất 2 lựa chọn.");
     isSpinning = false;
@@ -88,12 +89,10 @@ document.getElementById("spinButton").onclick = () => {
     const progress = Math.min(elapsed / spinTime, 1);
     const easing = 1 - Math.pow(1 - progress, 3);
     angle = easing * spinAngle * 2 * Math.PI;
-
     drawSpinningWheel(angle);
 
-    if (progress < 1) {
-      requestAnimationFrame(animateSpin);
-    } else {
+    if (progress < 1) requestAnimationFrame(animateSpin);
+    else {
       isSpinning = false;
       showResult(angle);
     }
@@ -102,6 +101,7 @@ document.getElementById("spinButton").onclick = () => {
   requestAnimationFrame(animateSpin);
 };
 
+// ======================== HIỂN THỊ KẾT QUẢ ===========================
 function showResult(finalAngle) {
   const sliceAngle = (2 * Math.PI) / names.length;
   const adjusted = finalAngle % (2 * Math.PI);
@@ -110,40 +110,40 @@ function showResult(finalAngle) {
 
   document.getElementById("resultText").textContent = `🎯 Tiêu chọn: ${winner}`;
   document.getElementById("resultOverlay").style.display = 'flex';
-    noteSound.currentTime = 0;
-  noteSound.play();
 
+  noteSound.currentTime = 0;
+  noteSound.play();
 }
 
-document.getElementById("closeResult").onclick = () => {
-  document.getElementById("resultOverlay").style.display = 'none';
-};
-
+// ====================== SỰ KIỆN KHỞI TẠO =============================
 document.addEventListener('DOMContentLoaded', () => {
   updateNameList();
   drawWheel();
 });
 
+// ====================== SỰ KIỆN DANH SÁCH ============================
 document.getElementById("inputNames").addEventListener("input", () => {
   updateNameList();
   drawWheel();
 });
 
+// ====================== NÚT LẶP DANH SÁCH ============================
 document.querySelectorAll('.repeat-btn').forEach(button => {
   button.addEventListener('click', () => {
-    document.querySelectorAll('.repeat-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.repeat-btn').forEach(b => b.classList.remove('active'));
     button.classList.add('active');
     repeatCount = parseInt(button.dataset.repeat);
-  updateNameList();
-  drawWheel();
+    updateNameList();
+    drawWheel();
     popSound.currentTime = 0;
     popSound.play();
   });
 });
 
+// ====================== NÚT TỐC ĐỘ QUAY =============================
 document.querySelectorAll('.speed-btn').forEach(button => {
   button.addEventListener('click', () => {
-    document.querySelectorAll('.speed-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
     button.classList.add('active');
     spinSpeed = parseInt(button.dataset.speed);
     popSound.currentTime = 0;
@@ -151,6 +151,7 @@ document.querySelectorAll('.speed-btn').forEach(button => {
   });
 });
 
+// ====================== VIETLOTT =====================================
 function generateVietlottNumbers(type) {
   const max = type === 'mega' ? 45 : 55;
   const pool = Array.from({ length: max }, (_, i) => i + 1);
@@ -166,8 +167,9 @@ function generateVietlottNumbers(type) {
 
 document.querySelectorAll('.vietlott-menu .menu-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-        menuSound.currentTime = 0;
+    menuSound.currentTime = 0;
     menuSound.play();
+
     const type = btn.dataset.type;
     const result = generateVietlottNumbers(type);
     const container = document.getElementById('vietlottNumbers');
@@ -183,29 +185,30 @@ document.querySelectorAll('.vietlott-menu .menu-btn').forEach(btn => {
 
     title.textContent = `Kết quả: ${type === 'mega' ? 'Mega 6/45' : 'Power 6/55'}`;
     document.getElementById('vietlottOverlay').style.display = 'flex';
-      noteSound.currentTime = 0;
-  noteSound.play();
 
+    noteSound.currentTime = 0;
+    noteSound.play();
   });
 });
 
-document.getElementById('vietlottClose').addEventListener('click', () => {
+document.getElementById('vietlottClose').onclick = () => {
   document.getElementById('vietlottOverlay').style.display = 'none';
-});
+};
 
-document.getElementById('abcdBtn').addEventListener('click', () => {
+// ====================== ABCD =========================================
+document.getElementById('abcdBtn').onclick = () => {
   document.getElementById('abcdOverlay').style.display = 'flex';
   noteSound.currentTime = 0;
   noteSound.play();
-});
+};
 
-document.getElementById('closeAbcd').addEventListener('click', () => {
+document.getElementById('closeAbcd').onclick = () => {
   document.getElementById('abcdOverlay').style.display = 'none';
   document.getElementById('abcdResult').innerHTML = '';
   document.getElementById('questionCount').value = '';
-});
+};
 
-document.getElementById('startAbcd').addEventListener('click', () => {
+document.getElementById('startAbcd').onclick = () => {
   const count = parseInt(document.getElementById('questionCount').value);
   const resultDiv = document.getElementById('abcdResult');
   resultDiv.innerHTML = '';
@@ -225,4 +228,9 @@ document.getElementById('startAbcd').addEventListener('click', () => {
   }
 
   resultDiv.textContent = output;
-});
+};
+
+// ===================== ĐÓNG KẾT QUẢ ========================
+document.getElementById("closeResult").onclick = () => {
+  document.getElementById("resultOverlay").style.display = 'none';
+};
