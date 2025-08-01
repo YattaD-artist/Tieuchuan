@@ -1,7 +1,6 @@
 const popSound = new Audio('Pop.mp3');
 const menuSound = new Audio('Menu.mp3');
 const goSound = new Audio('GO.mp3');
-const rollSound = new Audio('Roll.mp3');
 const noteSound = new Audio('Note.mp3');
 
 let names = [];
@@ -67,11 +66,6 @@ function drawSpinningWheel(rotation) {
 document.getElementById("spinButton").onclick = () => {
     goSound.currentTime = 0;
   goSound.play();
-
-  rollSound.loop = true;
-  rollSound.currentTime = 0;
-  rollSound.play();
-
   if (isSpinning) return;
   isSpinning = true;
   document.getElementById("resultOverlay").style.display = 'none';
@@ -101,8 +95,6 @@ document.getElementById("spinButton").onclick = () => {
       requestAnimationFrame(animateSpin);
     } else {
       isSpinning = false;
-            rollSound.pause();
-      rollSound.currentTime = 0;
       showResult(angle);
     }
   }
