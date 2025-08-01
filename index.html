@@ -7,25 +7,26 @@
   <link rel="stylesheet" href="tieu.css" />
 </head>
 <body>
-  <div class="vietlott-menu">
-  <button class="vietlott-btn" data-type="mega">Tiêu chọn: Vietlott Mega</button>
-  <button class="vietlott-btn" data-type="power">Tiêu chọn: Vietlott Power</button>
-<button class="menu vietlott-btn" id="abcdBtn">Tiêu chọn: ABCD</button>
 
-</div>
+  <!-- Thanh menu chính -->
+  <div class="menu">
+    <button class="menu-btn" data-type="mega">Tiêu chọn: Vietlott Mega</button>
+    <button class="menu-btn" data-type="power">Tiêu chọn: Vietlott Power</button>
+    <button class="menu-btn" id="abcdBtn">Tiêu chọn: ABCD</button>
+  </div>
 
   <div class="layout">
     <div class="left">
       <div style="position: absolute; bottom: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 3;">
-              </div>
+      </div>
       <canvas id="wheelCanvas" width="500" height="500"></canvas>
       <div id="centerImage"></div>
     </div>
 
     <div class="right">
       <h2>Viết danh sách đi, Tiêu chọn cho:</h2>
-    <div class="input-wrap">
-  <textarea id="inputNames">Tiêu
+      <div class="input-wrap">
+        <textarea id="inputNames">Tiêu
 Mà
 Chọn
 Thì
@@ -33,8 +34,8 @@ Chỉ
 Có
 Chuẩn
 Thôi</textarea>
-  <img src="Main.webp" alt="Main Image" id="mainImage" />
-</div>
+        <img src="Main.webp" alt="Main Image" id="mainImage" />
+      </div>
 
       <label>Số lần lặp danh sách:</label>
       <div id="repeatButtons">
@@ -80,17 +81,17 @@ Thôi</textarea>
     </div>
   </div>
 
-  <!-- Overlay nhập số lượng câu hỏi -->
-<div id="abcdOverlay" class="overlay">
-  <div class="overlay-box">
-    <h2>Nhập số lượng câu hỏi (tối đa 100):</h2>
-    <input type="number" id="questionCount" min="1" max="100" />
-    <button id="startAbcd">Bắt đầu</button>
-    <button id="closeAbcd" class="close-btn">✕</button>
-    <div id="abcdResult" class="result-area"></div>
+  <!-- Overlay nhập số lượng câu hỏi ABCD -->
+  <div id="abcdOverlay" class="overlay">
+    <div class="overlay-box">
+      <h2>Nhập số lượng câu hỏi (tối đa 100):</h2>
+      <input type="number" id="questionCount" min="1" max="100" />
+      <button id="startAbcd">Bắt đầu</button>
+      <button id="closeAbcd" class="close-btn">✕</button>
+      <div id="abcdResult" class="result-area"></div>
+    </div>
   </div>
-</div>
-  
+
   <script src="tieu.js"></script>
 </body>
 </html>
