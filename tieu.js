@@ -200,3 +200,39 @@ document.querySelectorAll('.vietlott-btn').forEach(btn => {
 document.getElementById('vietlottClose').addEventListener('click', () => {
   document.getElementById('vietlottOverlay').style.display = 'none';
 });
+
+const noteSound = new Audio('Note.mp3');
+
+document.getElementById('abcdBtn').addEventListener('click', () => {
+  document.getElementById('abcdOverlay').style.display = 'flex';
+  noteSound.currentTime = 0;
+  noteSound.play();
+});
+
+document.getElementById('closeAbcd').addEventListener('click', () => {
+  document.getElementById('abcdOverlay').style.display = 'none';
+  document.getElementById('abcdResult').innerHTML = '';
+  document.getElementById('questionCount').value = '';
+});
+
+document.getElementById('startAbcd').addEventListener('click', () => {
+  const count = parseInt(document.getElementById('questionCount').value);
+  const resultDiv = document.getElementById('abcdResult');
+  resultDiv.innerHTML = '';
+
+  if (isNaN(count) || count < 1 || count > 100) {
+    alert("Vui lòng nhập số từ 1 đến 100.");
+    return;
+  }
+
+  const options = ['A', 'B', 'C', 'D'];
+  let output = "Tiêu nghĩ:\n";
+
+  for (let i = 1; i <= count; i++) {
+    const letter = options[Math.floor(Math.random() * 4)];
+    output += `${i}: ${letter}    `;
+    if (i % 4 === 0) output += "\n";
+  }
+
+  resultDiv.textContent = output;
+});
