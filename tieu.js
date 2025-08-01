@@ -127,10 +127,10 @@ document.getElementById("closeResult").onclick = () => {
   document.getElementById("resultOverlay").style.display = 'none';
 };
 
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
   updateNameList();
   drawWheel();
-};
+});
 
 document.getElementById("inputNames").addEventListener("input", () => {
   updateNameList();
@@ -172,7 +172,7 @@ function generateVietlottNumbers(type) {
   return selected.sort((a, b) => a - b);
 }
 
-document.querySelectorAll('.vietlott-btn').forEach(btn => {
+document.querySelectorAll('.menu-btn').forEach(btn => {
   btn.addEventListener('click', () => {
         menuSound.currentTime = 0;
     menuSound.play();
