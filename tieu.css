@@ -1,4 +1,6 @@
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 html, body {
   margin: 0;
@@ -15,13 +17,16 @@ html, body {
   width: 100%;
 }
 
-.left {
+.left, .right {
   flex: 1;
+  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.left {
   position: relative;
-  padding: 20px;
 }
 
 #wheelCanvas {
@@ -29,54 +34,41 @@ html, body {
   max-height: 100%;
   background: #fff;
   border-radius: 50%;
-  z-index: 1;
   border: 10px solid #2ecc71;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 #centerImage {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 150px;
-  height: 150px;
+  top: 50%; left: 50%;
+  width: 150px; height: 150px;
   transform: translate(-50%, -50%);
-  background-image: url('Tieu.webp');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  background: url('Tieu.webp') center/contain no-repeat;
   z-index: 2;
   pointer-events: none;
 }
 
 .right {
-  flex: 1;
-  display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px;
 }
 
-.right label {
+.right label, h2 {
   margin-top: 20px;
-  display: block;
   font-weight: bold;
-  color: #7c5013;
-}
-
-h2 {
   color: #7c5013;
 }
 
 textarea {
   width: 100%;
+  min-height: 15em;
+  max-height: 22.5em;
   padding: 10px;
   font-size: 16px;
   line-height: 1.5;
   resize: none;
   overflow-y: auto;
-  min-height: calc(1.5em * 10);
-  max-height: calc(1.5em * 15);
   border: 2px solid #91cb3f;
   border-radius: 6px;
   background: #fffbe0;
@@ -95,23 +87,36 @@ textarea {
 
 #mainImage {
   height: 100%;
-  max-height: calc(1.5em * 15);
+  max-height: 22.5em;
   object-fit: contain;
+  display: block;
 }
 
-button {
+button, .menu-btn, .vietlott-btn {
   padding: 10px 15px;
   font-size: 16px;
   cursor: pointer;
   border: none;
   border-radius: 6px;
-  background-color: #91cb3f;
+  transition: 0.2s ease;
+}
+
+button {
+  background: #91cb3f;
   color: #1a1a1a;
-  transition: background-color 0.2s ease;
 }
 
 button:hover:not(#spinButton) {
   transform: scale(1.2);
+}
+
+#spinButton {
+  background: #e7a81e;
+  margin-top: 20px;
+}
+
+#spinButton:hover {
+  background: #fcca5c;
 }
 
 #repeatButtons, #speedButtons {
@@ -122,121 +127,53 @@ button:hover:not(#spinButton) {
 }
 
 .repeat-btn.active {
-  background-color: #00a79b;
+  background: #00a79b;
   color: white;
   font-weight: bold;
 }
 
 .speed-btn.active {
-  background-color: #fcca5c;
+  background: #fcca5c;
   color: #000;
   font-weight: bold;
 }
 
-#spinButton {
-  background-color: #e7a81e;
-  margin-top: 20px;
-}
-
-#spinButton:hover {
-  background-color: #fcca5c;
-}
-
-/* Overlay Result Box */
-#resultOverlay {
+#resultOverlay, #vietlottOverlay {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.6);
   display: none;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
 
-#resultBox {
+#resultBox, #vietlottBox {
   background: #fff;
   padding: 30px 40px;
   border-radius: 10px;
+  min-width: 300px;
   text-align: center;
   position: relative;
-  min-width: 300px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
-#resultBox h3 {
+#resultBox h3, #vietlottBox h3 {
   font-size: 24px;
-  margin: 0;
   color: #7c5013;
+  margin: 0 0 20px;
 }
 
-#closeResult {
+#closeResult, #vietlottClose {
   position: absolute;
-  top: 8px;
-  right: 12px;
+  top: 8px; right: 12px;
   font-size: 20px;
   cursor: pointer;
   color: #888;
 }
 
-#closeResult:hover {
-  color: #000;
-}
-
-.vietlott-btn {
-  padding: 10px 15px;
-  font-size: 14px;
-  border: none;
-  border-radius: 6px;
-  background-color: #fcca5c;
-  color: #260b03;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.vietlott-btn:hover {
-  transform: scale(1.1);
-  background-color: #ffd77e;
-}
-
-#vietlottOverlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-#vietlottBox {
-  background: #fff;
-  padding: 30px 40px;
-  border-radius: 10px;
-  text-align: center;
-  position: relative;
-  min-width: 300px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
-
-#vietlottBox h3 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #7c5013;
-}
-
-#vietlottClose {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  font-size: 20px;
-  cursor: pointer;
-  color: #888;
-}
-
-#vietlottClose:hover {
+#closeResult:hover, #vietlottClose:hover {
   color: #000;
 }
 
@@ -251,81 +188,23 @@ button:hover:not(#spinButton) {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #91cb3f;
+  background: #91cb3f;
   color: #fff;
+  font-weight: bold;
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  font-size: 16px;
   box-shadow: 0 0 5px rgba(0,0,0,0.3);
-  transition: transform 0.2s ease;
   pointer-events: none;
+  transition: transform 0.2s;
 }
 
 .vietlott-ball:hover {
   transform: scale(1.1);
 }
-.vietlott-menu {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(240, 240, 240, 0.9);
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 12px 0;
-  z-index: 5;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
 
-.vietlott-menu .vietlott-btn {
-  padding: 10px 16px;
-  background-color: #ffd966;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
-}
-
-.vietlott-menu .vietlott-btn:hover {
-  background-color: #ffc107;
-  transform: scale(1.1);
-}
-.right-content {
-  display: flex;
-  align-items: center;         /* Gióng giữa theo chiều dọc */
-  justify-content: space-between;
-  gap: 10px;                   /* Khoảng cách nhỏ hơn giữa ảnh và textarea */
-}
-
-.image-container {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#mainImage {
-  height: 100%;                 /* Nhỏ hơn 80%, đúng yêu cầu */
-  max-height: 240px;
-  object-fit: contain;
-  display: block;
-}
-
-#abcdOverlay .overlay-box {
-  max-width: 600px;
-  text-align: center;
-}
-.result-area {
-  margin-top: 20px;
-  font-size: 18px;
-  white-space: pre-line;
-}
-
-.menu {
+.menu, .vietlott-menu {
   position: fixed;
   top: 0;
   left: 0;
@@ -333,39 +212,68 @@ button:hover:not(#spinButton) {
   display: flex;
   justify-content: center;
   gap: 20px;
-  background-color: rgba(255, 253, 234, 0.95);
   padding: 12px 0;
   z-index: 1000;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
-.menu-btn {
-  padding: 10px 20px;
+.menu {
+  background: rgba(255, 253, 234, 0.95);
+}
+
+.vietlott-menu {
+  background: rgba(240, 240, 240, 0.9);
+}
+
+.menu-btn, .vietlott-menu .vietlott-btn {
   font-size: 15px;
   font-weight: bold;
-  border: none;
   border-radius: 8px;
-  background-color: #ffd966;
+  background: #ffd966;
   color: #2e2e2e;
-  cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
 }
 
-.menu-btn:hover {
-  background-color: #ffc107;
+.menu-btn:hover, .vietlott-menu .vietlott-btn:hover {
+  background: #ffc107;
   transform: scale(1.1);
 }
 
-/*ĐIệN THOẠI*/
+.right-content, .image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-content {
+  justify-content: space-between;
+  gap: 10px;
+}
+
+#abcdOverlay .overlay-box {
+  max-width: 600px;
+  text-align: center;
+}
+
+.result-area {
+  margin-top: 20px;
+  font-size: 18px;
+  white-space: pre-line;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .vietlott-menu {
+  .vietlott-menu, .input-wrap, .right-content {
     flex-direction: column;
-    gap: 10px;
-    padding: 10px;
     align-items: center;
   }
 
-  .vietlott-menu .vietlott-btn {
+  .vietlott-menu {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .vietlott-menu .vietlott-btn,
+  #spinButton {
     width: 90%;
     font-size: 1rem;
   }
@@ -373,7 +281,7 @@ button:hover:not(#spinButton) {
   .layout {
     flex-direction: column;
     align-items: center;
-    padding-top: 80px; /* tránh đụng menu */
+    padding-top: 80px;
   }
 
   .left, .right {
@@ -386,39 +294,15 @@ button:hover:not(#spinButton) {
   }
 
   #inputNames {
-    width: 100%;
+    width: 90%;
     height: 120px;
   }
 
   #repeatButtons, #speedButtons {
-    flex-wrap: wrap;
     justify-content: center;
   }
 
-  #repeatButtons button,
-  #speedButtons button {
-    margin: 5px;
-  }
-
-  #spinButton {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.1rem;
-  }
-
-  #resultBox,
-  #vietlottBox {
-    width: 90%;
-  }
-}
-
-@media (max-width: 768px) {
-  .input-wrap {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #inputNames {
+  #resultBox, #vietlottBox {
     width: 90%;
   }
 
@@ -426,21 +310,9 @@ button:hover:not(#spinButton) {
     width: 80%;
     height: auto;
     max-height: none;
-  }
-}
-@media (max-width: 768px) {
-  .right-content {
-    flex-direction: column;
-    align-items: center;
   }
 
   .image-container {
     margin-top: 20px;
-  }
-
-  #mainImage {
-    width: 80%;
-    height: auto;
-    max-height: none;
   }
 }
