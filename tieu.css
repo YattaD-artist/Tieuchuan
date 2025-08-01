@@ -181,7 +181,7 @@ textarea {
 }
 
 /* Kết quả bánh */
-#resultBox h3 { font-size:24px; margin:0; color:#7c5013; }
+#resultBox h3 { font-size:24px; line-height: 1.5; margin:0; color:#7c5013; }
 
 /* ABCD input & result */
 input#questionCount {
