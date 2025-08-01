@@ -201,8 +201,6 @@ document.getElementById('vietlottClose').addEventListener('click', () => {
   document.getElementById('vietlottOverlay').style.display = 'none';
 });
 
-const noteSound = new Audio('Note.mp3');
-
 document.getElementById('abcdBtn').addEventListener('click', () => {
   document.getElementById('abcdOverlay').style.display = 'flex';
   noteSound.currentTime = 0;
