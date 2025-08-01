@@ -309,10 +309,20 @@ button:hover:not(#spinButton) {
 }
 
 #mainImage {
-  height: 60%;                 /* Nhỏ hơn 80%, đúng yêu cầu */
+  height: 100%;                 /* Nhỏ hơn 80%, đúng yêu cầu */
   max-height: 240px;
   object-fit: contain;
   display: block;
+}
+
+#abcdOverlay .overlay-box {
+  max-width: 600px;
+  text-align: center;
+}
+.result-area {
+  margin-top: 20px;
+  font-size: 18px;
+  white-space: pre-line;
 }
 
 
