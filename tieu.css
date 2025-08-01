@@ -94,8 +94,8 @@ html, body {
   flex-direction: column; justify-content: center;
   padding: 20px;
 }
-h2, .right label { color: #7c5013; }
-.right label { margin-top: 20px; font-weight: bold; }
+h2, .right label { margin-top: 50px; color: #7c5013; }
+.right label { margin-top: 30px; font-weight: bold; }
 
 /* Textarea & image */
 .input-wrap {
