@@ -175,7 +175,7 @@ document.querySelectorAll('.vietlott-menu .menu-btn').forEach(btn => {
     const container = document.getElementById('vietlottNumbers');
     const title = document.getElementById('vietlottTitle');
 
-    container.innerHTML = '';
+    container.innerHTML = '';    
     result.forEach(num => {
       const ball = document.createElement('div');
       ball.className = 'vietlott-ball';
@@ -196,38 +196,47 @@ document.getElementById('vietlottClose').onclick = () => {
 };
 
 // ====================== ABCD =========================================
-document.getElementById('abcdBtn').onclick = () => {
-  document.getElementById('abcdOverlay').style.display = 'flex';
+const abcdBtn = document.getElementById('abcdBtn');
+const abcdOverlay = document.getElementById('abcdOverlay');
+const closeAbcd = document.getElementById('closeAbcd');
+const startAbcd = document.getElementById('startAbcd');
+const questionCountInput = document.getElementById('questionCount');
+const abcdResult = document.getElementById('abcdResult');
+
+abcdBtn.onclick = () => {
+  abcdOverlay.style.display = 'flex';
   noteSound.currentTime = 0;
   noteSound.play();
 };
 
-document.getElementById('closeAbcd').onclick = () => {
-  document.getElementById('abcdOverlay').style.display = 'none';
-  document.getElementById('abcdResult').innerHTML = '';
-  document.getElementById('questionCount').value = '';
+closeAbcd.onclick = () => {
+  abcdOverlay.style.display = 'none';
+  abcdResult.innerHTML = '';
+  questionCountInput.value = '';
 };
 
-document.getElementById('startAbcd').onclick = () => {
-  const count = parseInt(document.getElementById('questionCount').value);
-  const resultDiv = document.getElementById('abcdResult');
-  resultDiv.innerHTML = '';
+startAbcd.onclick = () => {
+  const count = parseInt(questionCountInput.value);
+  abcdResult.innerHTML = '';
 
   if (isNaN(count) || count < 1 || count > 100) {
     alert("Vui lòng nhập số từ 1 đến 100.");
     return;
   }
 
+  // Thiết lập số cột: tối thiểu 5, tối đa 10
+  const cols = Math.min(Math.max(count, 5), 10);
+  abcdResult.style.setProperty('--cols', cols);
+
   const options = ['A', 'B', 'C', 'D'];
-  let output = "Tiêu nghĩ:\n";
 
   for (let i = 1; i <= count; i++) {
     const letter = options[Math.floor(Math.random() * 4)];
-    output += `${i}: ${letter}    `;
-    if (i % 4 === 0) output += "\n";
+    const cell = document.createElement('div');
+    cell.className = 'abcd-cell';
+    cell.textContent = `${i}: ${letter}`;
+    abcdResult.appendChild(cell);
   }
-
-  resultDiv.textContent = output;
 };
 
 // ===================== ĐÓNG KẾT QUẢ ========================
