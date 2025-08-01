@@ -174,8 +174,8 @@ closeAbcd.onclick = ()=>{
 };
 startAbcd.onclick = ()=>{
   const c = parseInt(questionInput.value);
-  if (isNaN(c)||c<1||c>100) {
-    alert("Vui lòng nhập số từ 1 đến 100."); return;
+  if (isNaN(c)||c<1||c>50) {
+    alert("Vui lòng nhập số từ 1 đến 50."); return;
   }
   abcdResult.innerHTML='';
   const cols = Math.min(Math.max(c,5),10);
