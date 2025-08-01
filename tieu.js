@@ -87,7 +87,7 @@ function showResult(finalAngle) {
   const adj   = finalAngle % (2*Math.PI);
   const idx   = Math.floor((2*Math.PI - adj)/slice) % names.length;
   const win   = names[idx];
-  document.getElementById("resultText").textContent = `🎯 Tiêu chọn: ${win}`;
+  document.getElementById("resultText").textContent = `🎯 Tiêu suy đi tính lại vài lần đã chọn được: ${win}`;
   document.getElementById("resultOverlay").style.display='flex';
   noteSound.currentTime=0; noteSound.play();
 }
