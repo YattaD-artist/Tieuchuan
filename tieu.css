@@ -55,6 +55,7 @@ html, body {
 }
 .menu-btn {
   padding: 10px 20px;
+   gap: 12px;
   font-size: 15px; font-weight: bold;
   border: none; border-radius: 8px;
   background-color: #ffd966;
