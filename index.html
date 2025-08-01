@@ -10,6 +10,8 @@
   <div class="vietlott-menu">
   <button class="vietlott-btn" data-type="mega">Tiêu chọn: Vietlott Mega</button>
   <button class="vietlott-btn" data-type="power">Tiêu chọn: Vietlott Power</button>
+    <!-- Nút trong menu -->
+<button class="menu" id="abcdBtn">Tiêu chọn: ABCD</button>
 </div>
 
   <div class="layout">
@@ -78,6 +80,17 @@ Thôi</textarea>
     </div>
   </div>
 
+  <!-- Overlay nhập số lượng câu hỏi -->
+<div id="abcdOverlay" class="overlay">
+  <div class="overlay-box">
+    <h2>Nhập số lượng câu hỏi (tối đa 100):</h2>
+    <input type="number" id="questionCount" min="1" max="100" />
+    <button id="startAbcd">Bắt đầu</button>
+    <button id="closeAbcd" class="close-btn">✕</button>
+    <div id="abcdResult" class="result-area"></div>
+  </div>
+</div>
+  
   <script src="tieu.js"></script>
 </body>
 </html>
